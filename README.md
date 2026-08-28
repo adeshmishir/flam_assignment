@@ -68,7 +68,6 @@ Backend (`backend/.env`):
 | `PORT`         | Backend port (default `4000` locally).           |
 | `LLM_API_KEY`  | The Groq API key (secret, backend only).         |
 | `LLM_MODEL`    | The LLM model to use.                            |
-| `FRONTEND_URL` | Allowed frontend origin for production CORS.     |
 
 Frontend (`frontend/.env`):
 
@@ -101,7 +100,7 @@ the LLM provider.
 1. `npm install`
 2. `npm start` (runs `node src/server.js`)
 3. Provide deployment environment variables:
-   `PORT`, `LLM_API_KEY`, `LLM_MODEL`, and `FRONTEND_URL`.
+   `PORT`, `LLM_API_KEY`, and `LLM_MODEL`.
 
 Secrets are injected by the deployment platform via environment variables and
 are never committed to the repository.

@@ -3,6 +3,7 @@ import Header from './components/Header.jsx'
 import StudyInput from './components/StudyInput.jsx'
 import GenerateButton from './components/GenerateButton.jsx'
 import EmptyState from './components/EmptyState.jsx'
+import FlashcardSection from './components/FlashcardSection.jsx'
 import { generateStudyMaterial } from './services/studyApi.js'
 
 function App() {
@@ -64,6 +65,18 @@ function App() {
         </section>
 
         {showEmptyState && <EmptyState />}
+
+        {status === 'success' && studyData && (
+          <section className="flex flex-col gap-6">
+            <div>
+              <h2 className="text-xl font-semibold text-slate-900">Study Material</h2>
+              <h3 className="mt-1 text-lg font-medium text-slate-800">{studyData.title}</h3>
+              <p className="mt-2 text-slate-600">{studyData.summary}</p>
+            </div>
+
+            <FlashcardSection flashcards={studyData.flashcards} />
+          </section>
+        )}
       </main>
     </div>
   )

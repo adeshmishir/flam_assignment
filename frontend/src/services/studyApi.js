@@ -18,22 +18,26 @@ export async function generateStudyMaterial(prompt, options = {}) {
     if (error.name === 'AbortError') {
       throw error
     }
-    throw new Error('Failed to reach the server. Please check your connection and try again.')
+    throw new Error('Unable to connect to the server. Please try again.')
   }
 
   let data
   try {
     data = await response.json()
   } catch {
-    throw new Error('The server returned an unexpected response. Please try again.')
+    throw new Error('The AI returned an unexpected response. Please try again.')
   }
 
   if (!response.ok) {
     const message =
       typeof data?.error === 'string' && data.error
         ? data.error
-        : 'Sorry, something went wrong. Please try again.'
+        : 'Something went wrong while generating your study material. Please try again.'
     throw new Error(message)
+  }
+
+  if (!data || typeof data !== 'object' || Array.isArray(data)) {
+    throw new Error('The AI returned an unexpected response. Please try again.')
   }
 
   return data

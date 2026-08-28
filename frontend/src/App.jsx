@@ -3,20 +3,42 @@ import Header from './components/Header.jsx'
 import StudyInput from './components/StudyInput.jsx'
 import GenerateButton from './components/GenerateButton.jsx'
 import EmptyState from './components/EmptyState.jsx'
+import { generateStudyMaterial } from './services/studyApi.js'
 
 function App() {
   const [notes, setNotes] = useState('')
+  const [studyData, setStudyData] = useState(null)
+  const [status, setStatus] = useState('idle')
+  const [error, setError] = useState(null)
 
   const handleChange = (event) => {
     setNotes(event.target.value)
   }
 
   const hasValidInput = notes.trim().length > 0
+  const isLoading = status === 'loading'
 
-  const handleGenerate = () => {
-    // API integration is added in a later module.
-    console.log('Generate clicked with:', notes)
+  const handleGenerate = async () => {
+    const trimmed = notes.trim()
+    if (!trimmed || isLoading) {
+      return
+    }
+
+    setStatus('loading')
+    setError(null)
+    setStudyData(null)
+
+    try {
+      const data = await generateStudyMaterial(trimmed)
+      setStudyData(data)
+      setStatus('success')
+    } catch (err) {
+      setError(err.message)
+      setStatus('error')
+    }
   }
+
+  const showEmptyState = status === 'idle' || status === 'error'
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -25,14 +47,23 @@ function App() {
 
         <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
           <div className="flex flex-col gap-6">
-            <StudyInput value={notes} onChange={handleChange} disabled={false} />
-            <div className="flex justify-center">
-              <GenerateButton onClick={handleGenerate} disabled={!hasValidInput} />
+            <StudyInput value={notes} onChange={handleChange} disabled={isLoading} />
+            <div className="flex flex-col items-center gap-4">
+              <GenerateButton
+                onClick={handleGenerate}
+                disabled={!hasValidInput}
+                isLoading={isLoading}
+              />
+              {error && (
+                <p className="text-center text-sm font-medium text-red-600" role="alert">
+                  {error}
+                </p>
+              )}
             </div>
           </div>
         </section>
 
-        <EmptyState />
+        {showEmptyState && <EmptyState />}
       </main>
     </div>
   )

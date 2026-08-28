@@ -97,11 +97,13 @@ function App() {
         {status === 'error' && <ErrorState message={error} onRetry={handleGenerate} />}
 
         {status === 'success' && studyData && (
-          <section className="flex flex-col gap-6">
-            <div>
-              <h2 className="text-xl font-semibold text-slate-900">Study Material</h2>
-              <h3 className="mt-1 text-lg font-medium text-slate-800">{studyData.title}</h3>
-              <p className="mt-2 text-slate-600">{studyData.summary}</p>
+          <section aria-label="Study material" className="flex flex-col gap-8">
+            <div className="flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+              <h2 className="text-2xl font-semibold text-slate-900">Study Material</h2>
+              <div>
+                <h3 className="text-xl font-bold text-slate-900">{studyData.title}</h3>
+                <p className="mt-2 leading-relaxed text-slate-600">{studyData.summary}</p>
+              </div>
             </div>
 
             <FlashcardSection flashcards={studyData.flashcards} />

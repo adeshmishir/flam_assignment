@@ -42,9 +42,12 @@ function FlashcardSection({ flashcards }) {
 
   return (
     <section aria-label="Flashcards" className="flex flex-col gap-4">
-      <h2 className="text-xl font-semibold text-slate-900">Flashcards</h2>
+      <div>
+        <h2 className="text-xl font-semibold text-slate-900">Flashcards</h2>
+        <p className="text-sm text-slate-500">Click a card to flip between question and answer.</p>
+      </div>
       <Flashcard card={card} isFlipped={isFlipped} onFlip={flip} />
-      <p className="text-center text-sm text-slate-500" aria-live="polite">
+      <p className="text-center text-sm font-medium text-slate-500" aria-live="polite">
         Card {currentIndex + 1} of {cards.length}
       </p>
       <FlashcardControls

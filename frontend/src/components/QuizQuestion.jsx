@@ -8,7 +8,7 @@ function QuizQuestion({ question, selected, onSelect, isSubmitted, onNext, isLas
   const isCorrect = selected === question.answer
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-5">
       <p className="text-lg font-medium text-slate-800">{question.question}</p>
 
       <QuizOptions
@@ -16,18 +16,19 @@ function QuizQuestion({ question, selected, onSelect, isSubmitted, onNext, isLas
         selected={selected}
         onSelect={onSelect}
         disabled={isSubmitted}
+        submitted={isSubmitted}
+        correctAnswer={question.answer}
       />
 
       {isSubmitted && (
         <div
           className={`rounded-lg border p-4 ${
-            isCorrect
-              ? 'border-green-300 bg-green-50'
-              : 'border-red-300 bg-red-50'
+            isCorrect ? 'border-green-300 bg-green-50' : 'border-red-300 bg-red-50'
           }`}
           role="status"
         >
-          <p className={`font-semibold ${isCorrect ? 'text-green-700' : 'text-red-700'}`}>
+          <p className={`flex items-center gap-2 font-semibold ${isCorrect ? 'text-green-700' : 'text-red-700'}`}>
+            <span aria-hidden="true">{isCorrect ? '✓' : '✗'}</span>
             {isCorrect ? 'Correct!' : 'Incorrect.'}
           </p>
           {!isCorrect && (
@@ -44,7 +45,7 @@ function QuizQuestion({ question, selected, onSelect, isSubmitted, onNext, isLas
           <button
             type="button"
             onClick={onNext}
-            className="rounded-lg bg-indigo-600 px-5 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-5 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
             {isLast ? 'Finish Quiz' : 'Next Question'}
           </button>

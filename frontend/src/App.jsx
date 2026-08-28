@@ -33,7 +33,7 @@ function App() {
 
   const handleGenerate = async () => {
     const trimmed = notes.trim()
-    if (!trimmed || isLoading) {
+    if (!trimmed) {
       return
     }
 
@@ -79,7 +79,7 @@ function App() {
 
         <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
           <div className="flex flex-col gap-6">
-            <StudyInput value={notes} onChange={handleChange} disabled={isLoading} />
+            <StudyInput value={notes} onChange={handleChange} />
             <div className="flex flex-col items-center gap-4">
               <GenerateButton
                 onClick={handleGenerate}

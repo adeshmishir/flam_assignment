@@ -4,6 +4,7 @@ import StudyInput from './components/StudyInput.jsx'
 import GenerateButton from './components/GenerateButton.jsx'
 import EmptyState from './components/EmptyState.jsx'
 import FlashcardSection from './components/FlashcardSection.jsx'
+import QuizSection from './components/QuizSection.jsx'
 import { generateStudyMaterial } from './services/studyApi.js'
 
 function App() {
@@ -75,6 +76,8 @@ function App() {
             </div>
 
             <FlashcardSection flashcards={studyData.flashcards} />
+
+            <QuizSection quiz={studyData.quiz} />
           </section>
         )}
       </main>

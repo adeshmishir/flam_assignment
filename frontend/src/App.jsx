@@ -3,6 +3,8 @@ import Header from './components/Header.jsx'
 import StudyInput from './components/StudyInput.jsx'
 import GenerateButton from './components/GenerateButton.jsx'
 import EmptyState from './components/EmptyState.jsx'
+import LoadingState from './components/LoadingState.jsx'
+import ErrorState from './components/ErrorState.jsx'
 import FlashcardSection from './components/FlashcardSection.jsx'
 import QuizSection from './components/QuizSection.jsx'
 import { generateStudyMaterial } from './services/studyApi.js'
@@ -70,8 +72,6 @@ function App() {
     }
   }
 
-  const showEmptyState = status === 'idle' || status === 'error'
-
   return (
     <div className="min-h-screen bg-slate-50">
       <main className="mx-auto flex w-full max-w-3xl flex-col gap-8 px-4 py-12 sm:py-16">
@@ -86,16 +86,15 @@ function App() {
                 disabled={!hasValidInput}
                 isLoading={isLoading}
               />
-              {error && (
-                <p className="text-center text-sm font-medium text-red-600" role="alert">
-                  {error}
-                </p>
-              )}
             </div>
           </div>
         </section>
 
-        {showEmptyState && <EmptyState />}
+        {status === 'idle' && <EmptyState />}
+
+        {status === 'loading' && <LoadingState />}
+
+        {status === 'error' && <ErrorState message={error} onRetry={handleGenerate} />}
 
         {status === 'success' && studyData && (
           <section className="flex flex-col gap-6">

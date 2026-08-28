@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Header from './components/Header.jsx'
 import StudyInput from './components/StudyInput.jsx'
 import GenerateButton from './components/GenerateButton.jsx'
@@ -13,6 +13,15 @@ function App() {
   const [status, setStatus] = useState('idle')
   const [error, setError] = useState(null)
 
+  const abortControllerRef = useRef(null)
+  const requestIdRef = useRef(0)
+
+  useEffect(() => {
+    return () => {
+      abortControllerRef.current?.abort()
+    }
+  }, [])
+
   const handleChange = (event) => {
     setNotes(event.target.value)
   }
@@ -26,15 +35,36 @@ function App() {
       return
     }
 
+    const requestId = ++requestIdRef.current
+
+    abortControllerRef.current?.abort()
+    const controller = new AbortController()
+    abortControllerRef.current = controller
+
     setStatus('loading')
     setError(null)
     setStudyData(null)
 
     try {
-      const data = await generateStudyMaterial(trimmed)
+      const data = await generateStudyMaterial(trimmed, {
+        signal: controller.signal,
+      })
+
+      if (requestId !== requestIdRef.current) {
+        return
+      }
+
       setStudyData(data)
       setStatus('success')
     } catch (err) {
+      if (err.name === 'AbortError') {
+        return
+      }
+
+      if (requestId !== requestIdRef.current) {
+        return
+      }
+
       setError(err.message)
       setStatus('error')
     }

@@ -31,6 +31,8 @@ app.use(
       }
       return callback(null, false)
     },
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type'],
   })
 )
 

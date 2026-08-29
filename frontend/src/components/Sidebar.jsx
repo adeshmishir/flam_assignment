@@ -52,7 +52,7 @@ function Sidebar({ sessions, onLoadSession, onDeleteSession, hasMaterial, onStar
       </div>
 
       {sessions.length === 0 ? (
-        <div className="flex flex-col gap-2 px-4 py-6">
+        <div className="flex flex-1 flex-col gap-2 px-4 py-6">
           <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500/15 to-blue-500/10 dark:from-indigo-500/25 dark:to-blue-500/15">
             <BookOpen className="h-4.5 w-4.5 text-indigo-500 dark:text-indigo-400" aria-hidden="true" />
           </span>

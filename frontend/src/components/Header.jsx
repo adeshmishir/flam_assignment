@@ -33,15 +33,15 @@ function Header() {
     >
       <motion.div
         variants={item}
-        className="inline-flex items-center gap-2 rounded-full border border-indigo-200/70 bg-white/80 px-3.5 py-1.5 text-xs font-semibold tracking-wide text-indigo-700 shadow-sm backdrop-blur"
+        className="inline-flex items-center gap-2 rounded-full border border-indigo-200/70 bg-white/80 px-3.5 py-1.5 text-xs font-semibold tracking-wide text-indigo-700 shadow-sm backdrop-blur dark:border-indigo-500/30 dark:bg-slate-900/60 dark:text-indigo-300"
       >
-        <Sparkles className="h-3.5 w-3.5 text-indigo-600" aria-hidden="true" />
+        <Sparkles className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400" aria-hidden="true" />
         AI-Powered Study Assistant
       </motion.div>
 
       <motion.h1
         variants={item}
-        className="mt-5 text-4xl font-extrabold leading-[1.1] tracking-tight text-slate-900 sm:text-5xl lg:text-6xl"
+        className="mt-5 text-4xl font-extrabold leading-[1.1] tracking-tight text-slate-900 dark:text-white sm:text-5xl lg:text-6xl"
       >
         Turn your notes into
         <span className="mt-1 block">
@@ -51,7 +51,7 @@ function Header() {
 
       <motion.p
         variants={item}
-        className="mt-5 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg"
+        className="mt-5 max-w-2xl text-base leading-relaxed text-slate-600 dark:text-slate-300 sm:text-lg"
       >
         Paste your notes or enter any topic and instantly generate interactive
         flashcards and practice quizzes.
@@ -64,9 +64,9 @@ function Header() {
         {features.map(({ icon: FeatureIcon, label }) => (
           <li
             key={label}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-slate-200 bg-white/70 px-4 py-2 text-sm font-medium text-slate-700 shadow-sm backdrop-blur sm:w-auto"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-slate-200 bg-white/70 px-4 py-2 text-sm font-medium text-slate-700 shadow-sm backdrop-blur dark:border-slate-700 dark:bg-slate-900/60 dark:text-slate-300 sm:w-auto"
           >
-            <FeatureIcon className="h-4 w-4 text-indigo-600" aria-hidden="true" />
+            <FeatureIcon className="h-4 w-4 text-indigo-600 dark:text-indigo-400" aria-hidden="true" />
             {label}
           </li>
         ))}

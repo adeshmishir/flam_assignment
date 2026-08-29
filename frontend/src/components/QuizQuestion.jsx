@@ -11,7 +11,7 @@ function QuizQuestion({ question, selected, onSelect, isSubmitted, onNext, isLas
 
   return (
     <div className="flex flex-col gap-6">
-      <p className="text-lg font-semibold leading-relaxed text-slate-800 sm:text-xl">
+      <p className="text-lg font-semibold leading-relaxed text-slate-800 dark:text-slate-100 sm:text-xl">
         {question.question}
       </p>
 
@@ -31,14 +31,14 @@ function QuizQuestion({ question, selected, onSelect, isSubmitted, onNext, isLas
           transition={{ duration: 0.35, ease: 'easeOut' }}
           className={`rounded-2xl border p-4 ${
             isCorrect
-              ? 'border-emerald-200 bg-emerald-50/80'
-              : 'border-rose-200 bg-rose-50/80'
+              ? 'border-emerald-200 bg-emerald-50/80 dark:border-emerald-500/40 dark:bg-emerald-500/10'
+              : 'border-rose-200 bg-rose-50/80 dark:border-rose-500/40 dark:bg-rose-500/10'
           }`}
           role="status"
         >
           <p
             className={`flex items-center gap-2 font-bold ${
-              isCorrect ? 'text-emerald-700' : 'text-rose-700'
+              isCorrect ? 'text-emerald-700 dark:text-emerald-400' : 'text-rose-700 dark:text-rose-400'
             }`}
           >
             {isCorrect ? (
@@ -49,11 +49,11 @@ function QuizQuestion({ question, selected, onSelect, isSubmitted, onNext, isLas
             <span>{isCorrect ? 'Correct!' : 'Incorrect.'}</span>
           </p>
           {!isCorrect && (
-            <p className="mt-2 text-sm leading-relaxed text-slate-700">
+            <p className="mt-2 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
               Correct answer: {question.options[question.answer]}
             </p>
           )}
-          <p className="mt-1.5 text-sm leading-relaxed text-slate-600">
+          <p className="mt-1.5 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
             Explanation: {question.explanation}
           </p>
         </motion.div>
@@ -64,7 +64,7 @@ function QuizQuestion({ question, selected, onSelect, isSubmitted, onNext, isLas
           <button
             type="button"
             onClick={onNext}
-            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-indigo-600/25 transition hover:from-indigo-500 hover:to-violet-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
+            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-indigo-600/25 transition hover:from-indigo-500 hover:to-violet-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-slate-950"
           >
             {isLast ? 'Finish Quiz' : 'Next Question'}
             <ChevronRight className="h-4 w-4" aria-hidden="true" />

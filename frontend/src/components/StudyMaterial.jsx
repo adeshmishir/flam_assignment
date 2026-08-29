@@ -1,8 +1,10 @@
 import { motion } from 'framer-motion'
-import { FileText, Sparkles } from 'lucide-react'
+import { FileText, LayoutPanelTop, Sparkles } from 'lucide-react'
 import ProgressiveText from './ProgressiveText.jsx'
 import FlashcardSection from './FlashcardSection.jsx'
 import QuizSection from './QuizSection.jsx'
+import BlockRenderer from './BlockRenderer.jsx'
+import RefinePanel from './RefinePanel.jsx'
 
 const containerVariants = {
   hidden: {},
@@ -20,7 +22,9 @@ const itemVariants = {
   },
 }
 
-function StudyMaterial({ data }) {
+function StudyMaterial({ data, onRefine, isRefining, refineError }) {
+  const hasBlocks = Array.isArray(data.blocks) && data.blocks.length > 0
+
   return (
     <motion.section
       aria-label="Study material"
@@ -31,36 +35,51 @@ function StudyMaterial({ data }) {
     >
       <motion.div
         variants={itemVariants}
-        className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white/80 p-6 shadow-md shadow-slate-900/5 backdrop-blur sm:p-8"
+        className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white/80 p-6 shadow-md shadow-slate-900/5 backdrop-blur dark:border-slate-800 dark:bg-slate-900/70 sm:p-8"
       >
         <div
-          className="pointer-events-none absolute inset-0 bg-gradient-to-br from-indigo-50/80 via-transparent to-violet-50/70"
+          className="pointer-events-none absolute inset-0 bg-gradient-to-br from-indigo-50/80 via-transparent to-violet-50/70 dark:from-indigo-500/10 dark:via-transparent dark:to-violet-500/10"
           aria-hidden="true"
         />
         <div className="relative">
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-indigo-600">
+          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-white shadow-sm shadow-indigo-600/30">
               <FileText className="h-4 w-4" aria-hidden="true" />
             </span>
             Study Material
-            <span className="ml-1 inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2.5 py-0.5 text-[11px] font-semibold normal-case tracking-normal text-indigo-600">
+            <span className="ml-1 inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2.5 py-0.5 text-[11px] font-semibold normal-case tracking-normal text-indigo-600 dark:bg-indigo-500/15 dark:text-indigo-300">
               <Sparkles className="h-3 w-3" aria-hidden="true" />
               AI generated
             </span>
           </div>
 
-          <h2 className="mt-4 text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">
+          <h2 className="mt-4 text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-3xl">
             {data.title}
           </h2>
 
-          <div className="mt-4 h-px bg-gradient-to-r from-indigo-300/70 via-slate-200 to-transparent" aria-hidden="true" />
+          <div
+            className="mt-4 h-px bg-gradient-to-r from-indigo-300/70 via-slate-200 to-transparent dark:from-indigo-500/40 dark:via-slate-700"
+            aria-hidden="true"
+          />
 
           <ProgressiveText
             text={data.summary}
-            className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg"
+            className="mt-4 text-base leading-relaxed text-slate-600 dark:text-slate-300 sm:text-lg"
           />
         </div>
       </motion.div>
+
+      {hasBlocks && (
+        <motion.div variants={itemVariants} className="flex flex-col gap-3.5">
+          <div className="flex items-center gap-2">
+            <LayoutPanelTop className="h-5 w-5 text-indigo-500 dark:text-indigo-400" aria-hidden="true" />
+            <h3 className="text-base font-bold tracking-tight text-slate-900 dark:text-white">
+              Key insights
+            </h3>
+          </div>
+          <BlockRenderer blocks={data.blocks} />
+        </motion.div>
+      )}
 
       <div className="grid gap-6 sm:gap-8 lg:grid-cols-2">
         <motion.div variants={itemVariants} className="min-w-0">
@@ -70,6 +89,8 @@ function StudyMaterial({ data }) {
           <QuizSection quiz={data.quiz} />
         </motion.div>
       </div>
+
+      <RefinePanel onRefine={onRefine} isRefining={isRefining} error={refineError} />
     </motion.section>
   )
 }

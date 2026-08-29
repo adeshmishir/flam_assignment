@@ -31,11 +31,11 @@ function HowItWorks() {
     <Reveal className="mt-4">
       <section aria-label="How it works" className="flex flex-col gap-6">
         <div className="flex flex-col items-center gap-2 text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-indigo-200/70 bg-indigo-50/70 px-3.5 py-1.5 text-xs font-semibold tracking-wide text-indigo-700">
+          <span className="inline-flex items-center gap-2 rounded-full border border-indigo-200/70 bg-indigo-50/70 px-3.5 py-1.5 text-xs font-semibold tracking-wide text-indigo-700 dark:border-indigo-500/30 dark:bg-indigo-500/10 dark:text-indigo-300">
             <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
             How it works
           </span>
-          <h2 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">
+          <h2 className="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-3xl">
             From notes to mastery in seconds
           </h2>
         </div>
@@ -50,10 +50,10 @@ function HowItWorks() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ duration: 0.5, delay: index * 0.12, ease: 'easeOut' }}
-                className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white/80 p-6 shadow-sm backdrop-blur transition hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-900/8 sm:p-7"
+                className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white/80 p-6 shadow-sm backdrop-blur transition hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-900/8 dark:border-slate-800 dark:bg-slate-900/70 dark:hover:shadow-indigo-950/40 sm:p-7"
               >
                 <span
-                  className="pointer-events-none absolute -top-3 -right-2 text-6xl font-extrabold text-slate-100/70 transition group-hover:text-indigo-100/70"
+                  className="pointer-events-none absolute -top-3 -right-2 text-6xl font-extrabold text-slate-100/70 transition group-hover:text-indigo-100/70 dark:text-slate-800/60 dark:group-hover:text-indigo-500/10"
                   aria-hidden="true"
                 >
                   {step.step}
@@ -63,10 +63,10 @@ function HowItWorks() {
                   <StepIcon className="h-6 w-6 text-white" aria-hidden="true" />
                 </span>
 
-                <h3 className="relative mt-5 text-lg font-bold tracking-tight text-slate-900">
+                <h3 className="relative mt-5 text-lg font-bold tracking-tight text-slate-900 dark:text-white">
                   {step.title}
                 </h3>
-                <p className="relative mt-2 text-sm leading-relaxed text-slate-600">
+                <p className="relative mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
                   {step.description}
                 </p>
               </motion.li>

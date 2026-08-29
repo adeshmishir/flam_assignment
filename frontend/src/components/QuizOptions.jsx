@@ -8,8 +8,35 @@ function QuizOptions({ options, selected, onSelect, disabled, submitted, correct
     return null
   }
 
+  const handleKeyDown = (event) => {
+    if (disabled) {
+      return
+    }
+
+    if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') {
+      event.preventDefault()
+      const next = selected === null ? 0 : (selected - 1 + options.length) % options.length
+      onSelect(next)
+    } else if (event.key === 'ArrowDown' || event.key === 'ArrowRight') {
+      event.preventDefault()
+      const next = selected === null ? 0 : (selected + 1) % options.length
+      onSelect(next)
+    } else if (/^[1-9]$/.test(event.key)) {
+      const index = Number(event.key) - 1
+      if (index < options.length) {
+        onSelect(index)
+      }
+    }
+  }
+
   return (
-    <div className="flex flex-col gap-3" role="radiogroup" aria-label="Options">
+    <div
+      className="flex flex-col gap-3"
+      role="radiogroup"
+      aria-label="Options"
+      aria-orientation="vertical"
+      onKeyDown={handleKeyDown}
+    >
       {options.map((option, index) => {
         const isSelected = selected === index
         const isCorrect = submitted && index === correctAnswer
@@ -22,25 +49,25 @@ function QuizOptions({ options, selected, onSelect, disabled, submitted, correct
 
         if (submitted) {
           if (isCorrect) {
-            ring = 'border-emerald-400 bg-emerald-50 ring-1 ring-emerald-400/40'
+            ring = 'border-emerald-400 bg-emerald-50 ring-1 ring-emerald-400/40 dark:border-emerald-500/60 dark:bg-emerald-500/10 dark:ring-emerald-500/30'
             badge = 'bg-emerald-500 text-white'
             label = <CircleCheck className="h-4 w-4" aria-hidden="true" />
           } else if (isWrongSelection) {
-            ring = 'border-rose-400 bg-rose-50 ring-1 ring-rose-400/40'
+            ring = 'border-rose-400 bg-rose-50 ring-1 ring-rose-400/40 dark:border-rose-500/60 dark:bg-rose-500/10 dark:ring-rose-500/30'
             badge = 'bg-rose-500 text-white'
             label = <CircleX className="h-4 w-4" aria-hidden="true" />
           } else {
-            ring = 'border-slate-200 bg-white text-slate-400'
-            badge = 'border border-slate-300 bg-white text-slate-400'
+            ring = 'border-slate-200 bg-white text-slate-400 dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-500'
+            badge = 'border border-slate-300 bg-white text-slate-400 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-500'
             dimmed = true
           }
         } else if (isSelected) {
-          ring = 'border-indigo-500 bg-indigo-50 ring-1 ring-indigo-500/40'
+          ring = 'border-indigo-500 bg-indigo-50 ring-1 ring-indigo-500/40 dark:border-indigo-400 dark:bg-indigo-500/10 dark:ring-indigo-500/30'
           badge = 'bg-gradient-to-br from-indigo-500 to-violet-500 text-white'
         } else {
           ring =
-            'border-slate-200 bg-white text-slate-800 hover:-translate-y-0.5 hover:border-indigo-300 hover:shadow-md hover:shadow-indigo-900/5'
-          badge = 'border border-slate-300 bg-slate-50 text-slate-500'
+            'border-slate-200 bg-white text-slate-800 hover:-translate-y-0.5 hover:border-indigo-300 hover:shadow-md hover:shadow-indigo-900/5 dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-100 dark:hover:border-indigo-500/60'
+          badge = 'border border-slate-300 bg-slate-50 text-slate-500 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300'
         }
 
         return (

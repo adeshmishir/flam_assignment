@@ -1,6 +1,8 @@
 import express from 'express'
 import cors from 'cors'
 import generateRouter from './routes/generate.js'
+import streamRouter from './routes/stream.js'
+import refineRouter from './routes/refine.js'
 
 const app = express()
 
@@ -41,5 +43,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api', generateRouter)
+app.use('/api', streamRouter)
+app.use('/api', refineRouter)
 
 export default app

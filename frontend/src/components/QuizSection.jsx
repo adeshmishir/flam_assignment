@@ -23,10 +23,10 @@ function QuizSection({ quiz }) {
     return (
       <section
         aria-label="Quiz"
-        className="rounded-3xl border border-slate-200 bg-white/80 p-8 text-center shadow-sm"
+        className="rounded-3xl border border-slate-200 bg-white/80 p-8 text-center shadow-sm dark:border-slate-800 dark:bg-slate-900/70"
       >
-        <ClipboardCheck className="mx-auto h-8 w-8 text-slate-300" aria-hidden="true" />
-        <p className="mt-3 text-sm text-slate-500">No quiz questions to show.</p>
+        <ClipboardCheck className="mx-auto h-8 w-8 text-slate-300 dark:text-slate-600" aria-hidden="true" />
+        <p className="mt-3 text-sm text-slate-500 dark:text-slate-400">No quiz questions to show.</p>
       </section>
     )
   }
@@ -65,16 +65,16 @@ function QuizSection({ quiz }) {
             <span className="flex h-10 w-10 flex-none items-center justify-center rounded-xl bg-gradient-to-br from-indigo-600 to-violet-600 shadow-md shadow-indigo-600/25">
               <ClipboardCheck className="h-5 w-5 text-white" aria-hidden="true" />
             </span>
-            <h3 className="text-lg font-bold tracking-tight text-slate-900">
+            <h3 className="text-lg font-bold tracking-tight text-slate-900 dark:text-white">
               {title}
             </h3>
           </div>
-          <span className="flex-none rounded-full border border-slate-200 bg-white/70 px-3 py-1 text-xs font-semibold text-slate-500">
+          <span className="flex-none rounded-full border border-slate-200 bg-white/70 px-3 py-1 text-xs font-semibold text-slate-500 dark:border-slate-700 dark:bg-slate-800/70 dark:text-slate-400">
             Question {index + 1} of {questionList.length}
           </span>
         </div>
 
-        <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
+        <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
           <motion.div
             animate={{ width: `${progress}%` }}
             transition={{ duration: 0.4, ease: 'easeOut' }}
@@ -87,7 +87,7 @@ function QuizSection({ quiz }) {
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35, ease: 'easeOut' }}
-          className="rounded-3xl border border-slate-200 bg-white/80 p-5 shadow-sm backdrop-blur sm:p-7"
+          className="rounded-3xl border border-slate-200 bg-white/80 p-5 shadow-sm backdrop-blur dark:border-slate-800 dark:bg-slate-900/70 sm:p-7"
         >
           <QuizQuestion
             question={question}
@@ -100,7 +100,7 @@ function QuizSection({ quiz }) {
         </motion.div>
 
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <p className="text-sm font-semibold text-slate-500">
+          <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">
             Score: {scoreValue} / {questionList.length}
           </p>
           {!submitted && (
@@ -108,7 +108,7 @@ function QuizSection({ quiz }) {
               type="button"
               onClick={onSubmit}
               disabled={selected === null}
-              className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-indigo-600/25 transition hover:from-indigo-500 hover:to-violet-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-none disabled:bg-slate-300 disabled:text-slate-500 disabled:shadow-none"
+              className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-indigo-600/25 transition hover:from-indigo-500 hover:to-violet-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-slate-950 disabled:cursor-not-allowed disabled:bg-none disabled:bg-slate-300 disabled:text-slate-500 disabled:shadow-none dark:disabled:bg-slate-700 dark:disabled:text-slate-500"
             >
               <Send className="h-4 w-4" aria-hidden="true" />
               Submit Answer
@@ -173,8 +173,8 @@ function QuizSection({ quiz }) {
     return (
       <section aria-label="Quiz" className="flex flex-col gap-5">
         <div className="flex items-center gap-2">
-          <Sparkles className="h-5 w-5 text-indigo-500" aria-hidden="true" />
-          <h3 className="text-lg font-bold tracking-tight text-slate-900">Quiz</h3>
+          <Sparkles className="h-5 w-5 text-indigo-500 dark:text-indigo-400" aria-hidden="true" />
+          <h3 className="text-lg font-bold tracking-tight text-slate-900 dark:text-white">Quiz</h3>
         </div>
         <QuizResult
           score={score}
@@ -183,7 +183,7 @@ function QuizSection({ quiz }) {
           retry={false}
         />
         {perfect && (
-          <p className="text-center text-sm text-slate-500">
+          <p className="text-center text-sm text-slate-500 dark:text-slate-400">
             Nothing to retry since you got every question correct.
           </p>
         )}
@@ -238,8 +238,8 @@ function QuizSection({ quiz }) {
   return (
     <section aria-label="Quiz" className="flex flex-col gap-5">
       <div className="flex items-center gap-2">
-        <ClipboardCheck className="h-5 w-5 text-indigo-500" aria-hidden="true" />
-        <h3 className="text-lg font-bold tracking-tight text-slate-900">Quiz</h3>
+        <ClipboardCheck className="h-5 w-5 text-indigo-500 dark:text-indigo-400" aria-hidden="true" />
+        <h3 className="text-lg font-bold tracking-tight text-slate-900 dark:text-white">Quiz</h3>
       </div>
       <QuizResult
         score={retryScore}

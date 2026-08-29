@@ -10,6 +10,17 @@
     />
     <meta name="theme-color" content="#4f46e5" />
     <title>AI Study Assistant</title>
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem('studyMate.theme')
+          var dark = stored !== 'light'
+          if (dark) {
+            document.documentElement.classList.add('dark')
+          }
+        } catch (e) {}
+      })()
+    </script>
   </head>
   <body>
     <div id="root"></div>

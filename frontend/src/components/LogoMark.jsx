@@ -1,13 +1,9 @@
+import { BrainCircuit } from 'lucide-react'
+
 function LogoMark() {
   return (
-    <span className="flex h-9 w-9 flex-none items-center justify-center rounded-lg bg-white dark:bg-slate-900">
-      <img
-        src="/favicon.svg"
-        alt="StudyMate logo"
-        className="h-8 w-8"
-        width="32"
-        height="32"
-      />
+    <span className="flex h-9 w-9 flex-none items-center justify-center rounded-lg bg-white text-indigo-600 dark:bg-slate-900 dark:text-indigo-400">
+      <BrainCircuit className="h-6 w-6" aria-hidden="true" strokeWidth={2.2} />
     </span>
   )
 }

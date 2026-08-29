@@ -1,13 +1,11 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { Menu, Moon, PanelLeftClose, PanelLeftOpen, Sun, X } from 'lucide-react'
+import { Menu, Moon, Sun, X } from 'lucide-react'
 import LogoMark from './LogoMark.jsx'
 
 const iconButtonClass =
   'inline-flex items-center justify-center rounded-lg border border-slate-200 bg-white p-2 text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-slate-600 dark:hover:bg-slate-800 dark:hover:text-white'
 
 function NavBar({
-  sidebarOpen,
-  onToggleSidebar,
   drawerOpen,
   onToggleDrawer,
   theme,
@@ -20,20 +18,6 @@ function NavBar({
     >
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
         <div className="flex min-w-0 items-center gap-3">
-          <button
-            type="button"
-            onClick={onToggleSidebar}
-            aria-expanded={sidebarOpen}
-            aria-label={sidebarOpen ? 'Hide session sidebar' : 'Show session sidebar'}
-            className={`${iconButtonClass} hidden lg:inline-flex`}
-          >
-            {sidebarOpen ? (
-              <PanelLeftClose className="h-4 w-4" aria-hidden="true" />
-            ) : (
-              <PanelLeftOpen className="h-4 w-4" aria-hidden="true" />
-            )}
-          </button>
-
           <LogoMark />
           <div className="min-w-0 leading-tight">
             <p className="truncate text-sm font-semibold tracking-tight text-slate-900 dark:text-white">

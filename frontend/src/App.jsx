@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { PanelLeftOpen } from 'lucide-react'
 import NavBar from './components/NavBar.jsx'
 import Sidebar from './components/Sidebar.jsx'
 import Header from './components/Header.jsx'
@@ -238,9 +239,22 @@ function App() {
             onDeleteSession={deleteSession}
             hasMaterial={Boolean(studyData)}
             onStartOver={handleStartOver}
+            sidebarOpen={sidebarOpen}
+            onToggleSidebar={() => setSidebarOpen((prev) => !prev)}
           />
         </div>
       </aside>
+
+      {!sidebarOpen && (
+        <button
+          type="button"
+          onClick={() => setSidebarOpen(true)}
+          aria-label="Show session sidebar"
+          className="fixed left-0 top-1/2 z-30 hidden h-10 w-9 -translate-y-1/2 items-center justify-center rounded-r-xl border border-l-0 border-slate-200 bg-white text-slate-500 shadow-sm transition hover:text-indigo-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400 dark:hover:text-indigo-400 lg:inline-flex"
+        >
+          <PanelLeftOpen className="h-4 w-4" aria-hidden="true" />
+        </button>
+      )}
 
       <div
         className={`relative flex min-h-screen min-w-0 flex-col transition-[padding] duration-300 ease-in-out ${
@@ -252,8 +266,6 @@ function App() {
           className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-80 bg-[radial-gradient(60%_100%_at_50%_0%,rgba(99,102,241,0.09),transparent)] dark:bg-[radial-gradient(60%_100%_at_50%_0%,rgba(129,140,248,0.14),transparent)]"
         />
         <NavBar
-          sidebarOpen={sidebarOpen}
-          onToggleSidebar={() => setSidebarOpen((prev) => !prev)}
           drawerOpen={drawerOpen}
           onToggleDrawer={() => setDrawerOpen((prev) => !prev)}
           theme={theme}

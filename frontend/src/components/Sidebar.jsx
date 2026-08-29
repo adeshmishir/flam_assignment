@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { BookOpen, BrainCircuit, Clock, RotateCcw, Trash2 } from 'lucide-react'
+import { BookOpen, BrainCircuit, Clock, PanelLeftClose, RotateCcw, Trash2 } from 'lucide-react'
 
 const PROFILE_NAMES = ['Aarav', 'Maya', 'Leo', 'Sam', 'Priya', 'Iris']
 
@@ -23,7 +23,15 @@ function formatTime(timestamp) {
   return new Date(timestamp).toLocaleDateString()
 }
 
-function Sidebar({ sessions, onLoadSession, onDeleteSession, hasMaterial, onStartOver }) {
+function Sidebar({
+  sessions,
+  onLoadSession,
+  onDeleteSession,
+  hasMaterial,
+  onStartOver,
+  sidebarOpen,
+  onToggleSidebar,
+}) {
   const [profileIndex] = useState(() => {
     const saved = window.localStorage.getItem('studymate:profile')
     if (saved !== null) {
@@ -40,14 +48,27 @@ function Sidebar({ sessions, onLoadSession, onDeleteSession, hasMaterial, onStar
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex items-center justify-between px-4 pb-2 pt-5">
-        <p className="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">
-          Sessions
-        </p>
-        {sessions.length > 0 && (
-          <span className="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs font-semibold text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400">
-            {sessions.length}
-          </span>
+      <div className="flex items-center justify-between gap-2 px-4 pb-2 pt-5">
+        <div className="flex min-w-0 items-center gap-2">
+          <p className="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+            Sessions
+          </p>
+          {sessions.length > 0 && (
+            <span className="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs font-semibold text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400">
+              {sessions.length}
+            </span>
+          )}
+        </div>
+        {onToggleSidebar && (
+          <button
+            type="button"
+            onClick={onToggleSidebar}
+            aria-expanded={sidebarOpen}
+            aria-label="Hide session sidebar"
+            className="ml-1 inline-flex flex-none items-center justify-center rounded-lg p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-500 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+          >
+            <PanelLeftClose className="h-4 w-4" aria-hidden="true" />
+          </button>
         )}
       </div>
 

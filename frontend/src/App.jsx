@@ -31,6 +31,12 @@ function App() {
   const [isRefining, setIsRefining] = useState(false)
   const [refineError, setRefineError] = useState(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(() => {
+    if (typeof window === 'undefined') {
+      return true
+    }
+    return window.localStorage.getItem('studymate:sidebar') !== '0'
+  })
 
   const { theme, toggleTheme } = useTheme()
   const { sessions, saveSession, deleteSession } = useSessions()
@@ -44,6 +50,10 @@ function App() {
       abortControllerRef.current?.abort()
     }
   }, [])
+
+  useEffect(() => {
+    window.localStorage.setItem('studymate:sidebar', sidebarOpen ? '1' : '0')
+  }, [sidebarOpen])
 
   useEffect(() => {
     if (!drawerOpen) {
@@ -216,22 +226,35 @@ function App() {
 
   return (
     <div className="flex min-h-screen flex-col bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 lg:flex-row">
-      <aside className="hidden w-64 shrink-0 border-r border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950 lg:block">
-        <div className="sticky top-0 h-screen">
+      <aside
+        className={`relative hidden shrink-0 overflow-hidden border-r border-slate-200 bg-white transition-[width] duration-300 ease-in-out dark:border-slate-800 dark:bg-slate-900 lg:block ${
+          sidebarOpen ? 'w-64 border-r' : 'w-0 border-transparent'
+        }`}
+      >
+        <div className="sticky top-0 h-screen w-64">
           <Sidebar
             sessions={sessions}
             onLoadSession={handleLoadSession}
             onDeleteSession={deleteSession}
             hasMaterial={Boolean(studyData)}
             onStartOver={handleStartOver}
-            theme={theme}
-            onToggleTheme={toggleTheme}
           />
         </div>
       </aside>
 
-      <div className="flex min-w-0 flex-1 flex-col">
-        <NavBar drawerOpen={drawerOpen} onToggleDrawer={() => setDrawerOpen((prev) => !prev)} />
+      <div className="relative flex min-w-0 flex-1 flex-col">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-80 bg-[radial-gradient(60%_100%_at_50%_0%,rgba(99,102,241,0.09),transparent)] dark:bg-[radial-gradient(60%_100%_at_50%_0%,rgba(129,140,248,0.14),transparent)]"
+        />
+        <NavBar
+          sidebarOpen={sidebarOpen}
+          onToggleSidebar={() => setSidebarOpen((prev) => !prev)}
+          drawerOpen={drawerOpen}
+          onToggleDrawer={() => setDrawerOpen((prev) => !prev)}
+          theme={theme}
+          onToggleTheme={toggleTheme}
+        />
 
         <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-8 px-4 pt-8 pb-16 sm:px-6 sm:pt-10 lg:px-8">
         <Header />
@@ -241,8 +264,12 @@ function App() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35, ease: 'easeOut' }}
-          className="mx-auto w-full max-w-3xl rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900"
+          className="relative mx-auto w-full max-w-4xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition focus-within:border-indigo-300 focus-within:shadow-[0_0_0_1px_rgba(99,102,241,0.25),0_8px_30px_-12px_rgba(99,102,241,0.35)] dark:border-slate-800 dark:bg-slate-900 dark:focus-within:border-indigo-500/50 dark:focus-within:shadow-[0_0_0_1px_rgba(99,102,241,0.25),0_8px_30px_-12px_rgba(99,102,241,0.18)]"
         >
+          <span
+            aria-hidden="true"
+            className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-indigo-500/70 to-transparent"
+          />
           <div className="flex flex-col gap-5 px-5 py-5 sm:px-6 sm:py-6">
             <StudyInput
               value={notes}
@@ -265,19 +292,19 @@ function App() {
 
         <div ref={resultsRef} className="flex scroll-mt-24 flex-col gap-8">
           {status === 'idle' && (
-            <motion.div key="idle" className="mx-auto w-full max-w-3xl" {...stateMotion}>
+            <motion.div key="idle" className="mx-auto w-full max-w-4xl" {...stateMotion}>
               <EmptyState />
             </motion.div>
           )}
 
           {status === 'loading' && (
-            <motion.div key="loading" className="mx-auto w-full max-w-3xl" {...stateMotion}>
+            <motion.div key="loading" className="mx-auto w-full max-w-4xl" {...stateMotion}>
               <LoadingState streamText={streamText} />
             </motion.div>
           )}
 
           {status === 'error' && (
-            <motion.div key="error" className="mx-auto w-full max-w-3xl" {...stateMotion}>
+            <motion.div key="error" className="mx-auto w-full max-w-4xl" {...stateMotion}>
               <ErrorState message={error} onRetry={handleGenerate} />
             </motion.div>
           )}
@@ -316,7 +343,7 @@ function App() {
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
               transition={{ type: 'tween', duration: 0.22, ease: 'easeOut' }}
-              className="absolute inset-y-0 left-0 w-72 max-w-[85vw] overflow-y-auto border-r border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950"
+              className="absolute inset-y-0 left-0 w-72 max-w-[85vw] overflow-y-auto border-r border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900"
             >
               <Sidebar
                 sessions={sessions}
@@ -324,8 +351,6 @@ function App() {
                 onDeleteSession={deleteSession}
                 hasMaterial={Boolean(studyData)}
                 onStartOver={handleStartOver}
-                theme={theme}
-                onToggleTheme={toggleTheme}
               />
             </motion.aside>
           </div>

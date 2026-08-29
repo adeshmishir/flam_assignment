@@ -96,7 +96,7 @@ function FlashcardSection({ flashcards }) {
             <kbd className={kbdClass}>Space</kbd> flip
           </p>
         </div>
-        <span className="flex-none rounded-md border border-slate-200 px-2.5 py-1 text-xs font-medium text-slate-500 dark:border-slate-700 dark:text-slate-400">
+        <span className="flex-none rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-semibold text-slate-600 dark:border-slate-700 dark:bg-slate-800/70 dark:text-slate-300">
           {cards.length} cards
         </span>
       </div>
@@ -112,7 +112,7 @@ function FlashcardSection({ flashcards }) {
         <motion.div
           animate={{ width: `${progress}%` }}
           transition={{ duration: 0.3, ease: 'easeOut' }}
-          className="h-full rounded-full bg-indigo-500"
+          className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-blue-500"
         />
       </div>
 

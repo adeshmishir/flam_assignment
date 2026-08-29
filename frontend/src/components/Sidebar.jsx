@@ -1,5 +1,4 @@
-import { BookOpen, Clock, Moon, RotateCcw, Sun, Trash2 } from 'lucide-react'
-import LogoMark from './LogoMark.jsx'
+import { BookOpen, Clock, RotateCcw, Trash2 } from 'lucide-react'
 
 function formatTime(timestamp) {
   const diff = Date.now() - timestamp
@@ -21,33 +20,10 @@ function formatTime(timestamp) {
   return new Date(timestamp).toLocaleDateString()
 }
 
-const sidebarButtonClass =
-  'inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-slate-600 dark:hover:bg-slate-800 dark:hover:text-white'
-
-function Sidebar({
-  sessions,
-  onLoadSession,
-  onDeleteSession,
-  hasMaterial,
-  onStartOver,
-  theme,
-  onToggleTheme,
-}) {
+function Sidebar({ sessions, onLoadSession, onDeleteSession, hasMaterial, onStartOver }) {
   return (
     <div className="flex h-full flex-col">
-      <div className="flex items-center gap-2.5 border-b border-slate-200 px-4 py-4 dark:border-slate-800">
-        <LogoMark />
-        <div className="min-w-0 leading-tight">
-          <p className="truncate text-sm font-semibold tracking-tight text-slate-900 dark:text-white">
-            StudyMate
-          </p>
-          <p className="truncate text-xs text-slate-500 dark:text-slate-400">
-            Study Assistant
-          </p>
-        </div>
-      </div>
-
-      <div className="flex items-center justify-between px-4 pb-2 pt-4">
+      <div className="flex items-center justify-between px-4 pb-2 pt-5">
         <p className="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">
           Sessions
         </p>
@@ -60,11 +36,11 @@ function Sidebar({
 
       {sessions.length === 0 ? (
         <div className="flex flex-col gap-2 px-4 py-6">
-          <BookOpen className="h-6 w-6 text-slate-300 dark:text-slate-600" aria-hidden="true" />
-          <p className="text-sm font-medium text-slate-600 dark:text-slate-300">
-            No sessions yet
-          </p>
-          <p className="text-xs text-slate-400 dark:text-slate-500">
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500/15 to-blue-500/10 dark:from-indigo-500/25 dark:to-blue-500/15">
+            <BookOpen className="h-4.5 w-4.5 text-indigo-500 dark:text-indigo-400" aria-hidden="true" />
+          </span>
+          <p className="text-sm font-medium text-slate-600 dark:text-slate-300">No sessions yet</p>
+          <p className="text-xs leading-relaxed text-slate-400 dark:text-slate-500">
             Generated study material is saved here automatically.
           </p>
         </div>
@@ -105,32 +81,18 @@ function Sidebar({
         </ul>
       )}
 
-      <div className="flex flex-col gap-2 border-t border-slate-200 p-3 dark:border-slate-800">
-        <button
-          type="button"
-          onClick={onToggleTheme}
-          aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-          className={sidebarButtonClass}
-        >
-          {theme === 'dark' ? (
-            <Sun className="h-4 w-4" aria-hidden="true" />
-          ) : (
-            <Moon className="h-4 w-4" aria-hidden="true" />
-          )}
-          {theme === 'dark' ? 'Light mode' : 'Dark mode'}
-        </button>
-
-        {hasMaterial && (
+      {hasMaterial && (
+        <div className="border-t border-slate-200 p-3 dark:border-slate-800">
           <button
             type="button"
             onClick={onStartOver}
-            className={`${sidebarButtonClass} w-full justify-center`}
+            className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-slate-600 dark:hover:bg-slate-800 dark:hover:text-white"
           >
             <RotateCcw className="h-4 w-4" aria-hidden="true" />
             Start over
           </button>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   )
 }

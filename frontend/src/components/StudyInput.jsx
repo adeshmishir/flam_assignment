@@ -26,7 +26,7 @@ function StudyInput({ value, onChange, onFillSuggestion }) {
           rows={8}
           wrap="soft"
           placeholder="Paste your notes here, or describe a topic — e.g. 'binary search algorithm'"
-          className="mt-2 block w-full resize-y rounded-lg border border-slate-300 bg-white px-3.5 py-3 text-sm text-slate-900 placeholder:text-slate-400 transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/25 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500 dark:focus:border-indigo-400"
+          className="mt-2 block w-full resize-y rounded-lg border border-slate-300 bg-white px-3.5 py-3 text-sm text-slate-900 placeholder:text-slate-400 transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:shadow-[0_4px_20px_-8px_rgba(99,102,241,0.35)] dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500 dark:focus:border-indigo-400"
           aria-describedby="study-material-hint"
         />
         <div className="mt-1.5 flex items-center justify-between gap-3">
@@ -56,10 +56,10 @@ function StudyInput({ value, onChange, onFillSuggestion }) {
                 key={topic}
                 type="button"
                 onClick={() => onFillSuggestion(topic)}
-                className={`rounded-full border px-3 py-1.5 text-sm font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
+                className={`rounded-full border px-3 py-1.5 text-sm font-medium transition-all hover:-translate-y-0.5 active:translate-y-0 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
                   isActive
-                    ? 'border-indigo-500 bg-indigo-50 text-indigo-700 dark:border-indigo-400 dark:bg-indigo-500/15 dark:text-indigo-300'
-                    : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900 dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-100'
+                    ? 'border-indigo-500 bg-indigo-50 text-indigo-700 shadow-sm shadow-indigo-500/20 dark:border-indigo-400 dark:bg-indigo-500/15 dark:text-indigo-300'
+                    : 'border-slate-200 bg-white text-slate-600 hover:border-indigo-300 hover:text-indigo-600 dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-300 dark:hover:border-indigo-500/50 dark:hover:text-indigo-300'
                 }`}
               >
                 {topic}

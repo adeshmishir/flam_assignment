@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion'
 import { CircleCheck, CircleX } from 'lucide-react'
 
 const OPTION_LABELS = ['A', 'B', 'C', 'D']
@@ -45,14 +46,17 @@ function QuizOptions({ options, selected, onSelect, disabled, submitted, correct
         let badge = ''
         let label = OPTION_LABELS[index] ?? index + 1
         let dimmed = false
+        let glow = ''
 
         if (submitted) {
           if (isCorrect) {
-            ring = 'border-emerald-400 bg-emerald-50 dark:border-emerald-500/60 dark:bg-emerald-500/10'
+            ring =
+              'border-emerald-400 bg-emerald-50 shadow-[0_4px_20px_-8px_rgba(16,185,129,0.4)] dark:border-emerald-500/60 dark:bg-emerald-500/10'
             badge = 'bg-emerald-500 text-white'
             label = <CircleCheck className="h-4 w-4" aria-hidden="true" />
           } else if (isWrongSelection) {
-            ring = 'border-rose-400 bg-rose-50 dark:border-rose-500/60 dark:bg-rose-500/10'
+            ring =
+              'border-rose-400 bg-rose-50 shadow-[0_4px_20px_-8px_rgba(244,63,94,0.4)] dark:border-rose-500/60 dark:bg-rose-500/10'
             badge = 'bg-rose-500 text-white'
             label = <CircleX className="h-4 w-4" aria-hidden="true" />
           } else {
@@ -61,23 +65,27 @@ function QuizOptions({ options, selected, onSelect, disabled, submitted, correct
             dimmed = true
           }
         } else if (isSelected) {
-          ring = 'border-indigo-500 bg-indigo-50 dark:border-indigo-400 dark:bg-indigo-500/10'
+          ring =
+            'border-indigo-500 bg-indigo-50 shadow-[0_4px_20px_-8px_rgba(99,102,241,0.45)] dark:border-indigo-400 dark:bg-indigo-500/10'
           badge = 'bg-indigo-500 text-white'
+          glow = 'ring-2 ring-indigo-500/20'
         } else {
           ring =
-            'border-slate-200 bg-white text-slate-800 hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-100 dark:hover:border-slate-600 dark:hover:bg-slate-800'
+            'border-slate-200 bg-white text-slate-800 hover:border-indigo-300 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-100 dark:hover:border-indigo-500/40 dark:hover:bg-slate-800'
           badge = 'border border-slate-300 bg-slate-50 text-slate-500 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300'
         }
 
         return (
-          <button
+          <motion.button
             key={index}
             type="button"
             role="radio"
             aria-checked={isSelected}
             disabled={disabled}
             onClick={() => onSelect(index)}
-            className={`flex items-center gap-3 rounded-xl border px-4 py-3 text-left text-sm transition focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:cursor-not-allowed sm:text-[15px] ${ring}`}
+            whileTap={disabled ? undefined : { scale: 0.98 }}
+            transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+            className={`flex items-center gap-3 rounded-xl border px-4 py-3 text-left text-sm transition-shadow focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:cursor-not-allowed sm:text-[15px] ${ring} ${glow}`}
           >
             <span
               className={`flex h-7 w-7 flex-none items-center justify-center rounded-full text-xs font-bold ${
@@ -90,7 +98,7 @@ function QuizOptions({ options, selected, onSelect, disabled, submitted, correct
             <span className={`flex-1 leading-snug ${dimmed ? 'text-slate-400' : ''}`}>
               {option}
             </span>
-          </button>
+          </motion.button>
         )
       })}
     </div>

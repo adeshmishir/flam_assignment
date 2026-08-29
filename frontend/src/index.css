@@ -20,6 +20,18 @@
       transform: translateX(360%);
     }
   }
+
+  --animate-drift: drift 6s ease-in-out infinite;
+
+  @keyframes drift {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-6px);
+    }
+  }
 }
 
 html {

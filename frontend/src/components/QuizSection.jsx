@@ -62,9 +62,11 @@ function QuizSection({ quiz }) {
 
     return (
       <>
-        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+        <div
+          className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2"
+        >
           <h3 className="text-base font-semibold text-slate-900 dark:text-white">{title}</h3>
-          <span className="flex-none rounded-md border border-slate-200 px-2.5 py-1 text-xs font-medium text-slate-500 dark:border-slate-700 dark:text-slate-400">
+          <span className="flex-none rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-semibold text-slate-600 dark:border-slate-700 dark:bg-slate-800/70 dark:text-slate-300">
             Question {index + 1} of {questionList.length}
           </span>
         </div>
@@ -80,7 +82,7 @@ function QuizSection({ quiz }) {
           <motion.div
             animate={{ width: `${progress}%` }}
             transition={{ duration: 0.3, ease: 'easeOut' }}
-            className="h-full rounded-full bg-indigo-500"
+            className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-blue-500"
           />
         </div>
 

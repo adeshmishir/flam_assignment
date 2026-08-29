@@ -1,24 +1,7 @@
 import { useState } from 'react'
-import {
-  BookOpen,
-  BookOpenText,
-  BrainCircuit,
-  Clock,
-  GraduationCap,
-  NotebookPen,
-  RotateCcw,
-  Trash2,
-  UserRound,
-} from 'lucide-react'
+import { BookOpen, BrainCircuit, Clock, RotateCcw, Trash2 } from 'lucide-react'
 
-const PROFILES = [
-  { name: 'Aarav', icon: GraduationCap },
-  { name: 'Maya', icon: BookOpenText },
-  { name: 'Leo', icon: UserRound },
-  { name: 'Sam', icon: BrainCircuit },
-  { name: 'Priya', icon: NotebookPen },
-  { name: 'Iris', icon: BookOpen },
-]
+const PROFILE_NAMES = ['Aarav', 'Maya', 'Leo', 'Sam', 'Priya', 'Iris']
 
 function formatTime(timestamp) {
   const diff = Date.now() - timestamp
@@ -45,16 +28,15 @@ function Sidebar({ sessions, onLoadSession, onDeleteSession, hasMaterial, onStar
     const saved = window.localStorage.getItem('studymate:profile')
     if (saved !== null) {
       const index = Number(saved)
-      if (Number.isInteger(index) && index >= 0 && index < PROFILES.length) {
+      if (Number.isInteger(index) && index >= 0 && index < PROFILE_NAMES.length) {
         return index
       }
     }
-    const index = Math.floor(Math.random() * PROFILES.length)
+    const index = Math.floor(Math.random() * PROFILE_NAMES.length)
     window.localStorage.setItem('studymate:profile', String(index))
     return index
   })
-  const profile = PROFILES[profileIndex]
-  const ProfileIcon = profile.icon
+  const profileName = PROFILE_NAMES[profileIndex]
 
   return (
     <div className="flex h-full flex-col">
@@ -131,11 +113,11 @@ function Sidebar({ sessions, onLoadSession, onDeleteSession, hasMaterial, onStar
 
       <div className="flex items-center gap-2.5 border-t border-slate-200 px-4 py-3 dark:border-slate-800">
         <span className="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-blue-600 text-white shadow-sm shadow-indigo-600/30">
-          <ProfileIcon className="h-4 w-4" aria-hidden="true" />
+          <BrainCircuit className="h-4 w-4" aria-hidden="true" />
         </span>
         <div className="min-w-0">
           <p className="truncate text-sm font-semibold text-slate-800 dark:text-slate-100">
-            {profile.name}
+            {profileName}
           </p>
           <p className="truncate text-xs text-slate-400 dark:text-slate-500">Study locally</p>
         </div>

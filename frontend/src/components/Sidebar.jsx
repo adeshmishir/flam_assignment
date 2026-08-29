@@ -62,7 +62,7 @@ function Sidebar({ sessions, onLoadSession, onDeleteSession, hasMaterial, onStar
           </p>
         </div>
       ) : (
-        <ul className="flex-1 divide-y divide-slate-100 overflow-y-auto px-2 py-1 dark:divide-slate-800">
+        <ul className="flex-1 divide-y divide-slate-100 overflow-y-auto px-2 py-1 [scrollbar-width:none] dark:divide-slate-800 [&::-webkit-scrollbar]:hidden">
           {sessions.map((session) => (
             <li
               key={session.id}

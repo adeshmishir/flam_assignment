@@ -225,13 +225,13 @@ function App() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 lg:flex-row">
+    <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
       <aside
-        className={`relative hidden shrink-0 overflow-hidden border-r border-slate-200 bg-white transition-[width] duration-300 ease-in-out dark:border-slate-800 dark:bg-slate-900 lg:block ${
+        className={`fixed inset-y-0 left-0 z-30 hidden overflow-hidden border-slate-200 bg-white transition-[width] duration-300 ease-in-out dark:border-slate-800 dark:bg-slate-900 lg:block ${
           sidebarOpen ? 'w-64 border-r' : 'w-0 border-transparent'
         }`}
       >
-        <div className="sticky top-0 h-screen w-64">
+        <div className="h-full w-64">
           <Sidebar
             sessions={sessions}
             onLoadSession={handleLoadSession}
@@ -242,7 +242,11 @@ function App() {
         </div>
       </aside>
 
-      <div className="relative flex min-w-0 flex-1 flex-col">
+      <div
+        className={`relative flex min-h-screen min-w-0 flex-col transition-[padding] duration-300 ease-in-out ${
+          sidebarOpen ? 'lg:pl-64' : 'lg:pl-0'
+        }`}
+      >
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-80 bg-[radial-gradient(60%_100%_at_50%_0%,rgba(99,102,241,0.09),transparent)] dark:bg-[radial-gradient(60%_100%_at_50%_0%,rgba(129,140,248,0.14),transparent)]"
@@ -340,7 +344,7 @@ function App() {
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
               transition={{ type: 'tween', duration: 0.22, ease: 'easeOut' }}
-              className="absolute inset-y-0 left-0 w-72 max-w-[85vw] overflow-y-auto border-r border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900"
+              className="absolute inset-y-0 left-0 w-72 max-w-[85vw] overflow-y-auto [scrollbar-width:none] border-r border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 [&::-webkit-scrollbar]:hidden"
             >
               <Sidebar
                 sessions={sessions}

@@ -156,6 +156,39 @@ describe('QuizSection', () => {
 
     expect(screen.getByText('Retry Complete!')).toBeInTheDocument()
     expect(screen.getByText('Original Score: 2 / 3')).toBeInTheDocument()
+    // Every retried question was answered correctly, so no further retest is offered.
+    expect(screen.queryByRole('button', { name: 'Retest Wrong Answers' })).not.toBeInTheDocument()
+  })
+
+  it('offers a retest loop for questions still wrong after a retry', async () => {
+    const user = userEvent.setup()
+    render(<QuizSection quiz={[quiz[0], quiz[1]]} />)
+
+    // Q1 correct, Q2 wrong -> original score 1 / 2
+    await answer(user, 'Q1A')
+    await user.click(screen.getByRole('button', { name: 'Next Question' }))
+    await answer(user, 'Q2A')
+    await user.click(screen.getByRole('button', { name: 'Finish Quiz' }))
+
+    await user.click(screen.getByRole('button', { name: 'Retry Wrong Answers' }))
+
+    // Q2 is retried but answered wrong again.
+    await answer(user, 'Q2A')
+    await user.click(screen.getByRole('button', { name: 'Finish Quiz' }))
+
+    expect(screen.getByText('Retry Complete!')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Retest Wrong Answers' })).toBeInTheDocument()
+
+    // Retest drills only Q2 once more.
+    await user.click(screen.getByRole('button', { name: 'Retest Wrong Answers' }))
+    expect(screen.getByText('Question 1 of 1')).toBeInTheDocument()
+    expect(screen.getByText('Q2')).toBeInTheDocument()
+
+    await answer(user, 'Q2B') // correct this time
+    await user.click(screen.getByRole('button', { name: 'Finish Quiz' }))
+
+    expect(screen.getByText('Retry Complete!')).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Retest Wrong Answers' })).not.toBeInTheDocument()
   })
 
   it('handles an empty quiz gracefully', () => {

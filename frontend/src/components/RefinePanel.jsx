@@ -27,8 +27,7 @@ function RefinePanel({ onRefine, isRefining, error }) {
         Refine this material
       </h3>
       <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-        Ask to adjust what was generated — reword flashcards, add a checklist, or
-        expand the quiz.
+        Fine-tune what was generated.
       </p>
 
       <div className="mt-4 flex flex-col gap-3">

@@ -30,9 +30,6 @@ function StudyInput({ value, onChange, onFillSuggestion }) {
           aria-describedby="study-material-hint"
         />
         <div className="mt-1.5 flex items-center justify-between gap-3">
-          <p id="study-material-hint" className="text-sm text-slate-500 dark:text-slate-400">
-            More detail produces more specific flashcards and quiz questions.
-          </p>
           <p
             className={`flex-none text-xs font-medium tabular-nums ${
               charCount > 4000 ? 'text-amber-600 dark:text-amber-400' : 'text-slate-400 dark:text-slate-500'

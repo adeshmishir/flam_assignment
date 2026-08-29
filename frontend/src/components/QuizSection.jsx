@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Send } from 'lucide-react'
+import { RotateCcw, Send } from 'lucide-react'
 import QuizQuestion from './QuizQuestion.jsx'
 import QuizResult from './QuizResult.jsx'
 
@@ -21,6 +21,7 @@ function QuizSection({ quiz }) {
   const [retrySelected, setRetrySelected] = useState(null)
   const [retrySubmitted, setRetrySubmitted] = useState(false)
   const [retryScore, setRetryScore] = useState(0)
+  const [retryAnswers, setRetryAnswers] = useState([])
 
   if (questions.length === 0) {
     return (
@@ -38,6 +39,7 @@ function QuizSection({ quiz }) {
       .filter((answer) => !answer.correct)
       .map((answer) => answer.questionIndex)
     setRetryQuestions(questions.filter((_, index) => indexes.includes(index)))
+    setRetryAnswers([])
     setRetryIndex(0)
     setRetrySelected(null)
     setRetrySubmitted(false)
@@ -197,6 +199,7 @@ function QuizSection({ quiz }) {
 
     const handleRetrySubmit = () => {
       const correct = retrySelected === question.answer
+      setRetryAnswers((prev) => [...prev, { questionIndex: retryIndex, correct }])
       if (correct) {
         setRetryScore((prev) => prev + 1)
       }
@@ -236,6 +239,20 @@ function QuizSection({ quiz }) {
     )
   }
 
+  const stillWrongIndexes = retryAnswers
+    .filter((answer) => !answer.correct)
+    .map((answer) => answer.questionIndex)
+
+  const handleRetest = () => {
+    setRetryQuestions(retryQuestions.filter((_, index) => stillWrongIndexes.includes(index)))
+    setRetryAnswers([])
+    setRetryIndex(0)
+    setRetrySelected(null)
+    setRetrySubmitted(false)
+    setRetryScore(0)
+    setQuizMode('retry')
+  }
+
   return (
     <section aria-label="Quiz" className="flex flex-col gap-4">
       <h3 className="text-base font-semibold text-slate-900 dark:text-white">Quiz</h3>
@@ -246,6 +263,18 @@ function QuizSection({ quiz }) {
         originalScore={score}
         originalTotal={questions.length}
       />
+      {stillWrongIndexes.length > 0 && (
+        <div className="flex justify-center">
+          <button
+            type="button"
+            onClick={handleRetest}
+            className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-slate-600 dark:hover:bg-slate-800 dark:hover:text-white dark:focus-visible:ring-offset-slate-950"
+          >
+            <RotateCcw className="h-4 w-4" aria-hidden="true" />
+            Retest Wrong Answers
+          </button>
+        </div>
+      )}
     </section>
   )
 }

@@ -277,10 +277,7 @@ function App() {
               onFillSuggestion={fillSuggestion}
             />
 
-            <div className="flex flex-col gap-4 border-t border-slate-100 pt-4 dark:border-slate-800 sm:flex-row sm:items-center sm:justify-between">
-              <p className="text-xs text-slate-500 dark:text-slate-400">
-                Generates flashcards, a quiz, and visual blocks.
-              </p>
+            <div className="flex justify-end border-t border-slate-100 pt-4 dark:border-slate-800">
               <GenerateButton
                 onClick={handleGenerate}
                 disabled={!hasValidInput}

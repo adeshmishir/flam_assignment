@@ -20,9 +20,6 @@ function EmptyState() {
       <h2 className="mt-4 text-base font-semibold text-slate-900 dark:text-white">
         Start Learning
       </h2>
-      <p className="mx-auto mt-1.5 max-w-sm text-sm leading-relaxed text-slate-500 dark:text-slate-400">
-        Add a topic or paste your notes above to get started.
-      </p>
     </section>
   )
 }

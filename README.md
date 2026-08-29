@@ -160,8 +160,25 @@ The backend exposes `GET /health` → `{"status":"ok"}`.
 - Saved sessions and the theme preference are stored in the browser's `localStorage` and are therefore per-device.
 - Generation latency depends on provider load.
 
+## Project Development Status & Time Spent
+
+Approximate time spent across the different stages of the project:
+
+| Development Stage | Approx. Time Spent |
+| ----------------- | ------------------ |
+| Requirement Analysis & Planning | ~45 min |
+| UI/UX Design & Frontend Planning | ~45 min |
+| Frontend Development | ~2 hrs |
+| Backend Setup & API Development | ~1.5 hrs |
+| Frontend–Backend Integration | ~45 min |
+| Testing & Bug Fixing | ~45 min |
+| Deployment & Final Configuration | ~20 min |
+| README & Documentation | ~20 min |
+
+**Total Approximate Time: ~7 hours**
+
 ## AI Usage
 
 - The core feature uses a hosted LLM (Groq) to generate study material.
 - Development — including parts of the codebase and this documentation — was assisted by an AI coding tool and reviewed, tested, and validated by the developer before submission.
-- **Time spent:** approximately 10 hours of active development covering design, implementation, testing, and documentation.
+- **Time spent:** approximately 7 hours of active development covering design, implementation, testing, and documentation (see [Project Development Status & Time Spent](#project-development-status--time-spent)).

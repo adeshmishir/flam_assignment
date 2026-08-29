@@ -1,14 +1,13 @@
-import { motion } from 'framer-motion'
 import { CheckCircle2, PieChart, NotebookPen } from 'lucide-react'
 
 function CardBlock({ block }) {
   return (
-    <div className="flex h-full flex-col rounded-2xl border border-indigo-200/70 bg-indigo-50/50 p-5 shadow-sm dark:border-indigo-500/20 dark:bg-indigo-500/10">
+    <div className="flex h-full flex-col rounded-xl border border-indigo-200/70 bg-indigo-50/50 p-5 dark:border-indigo-500/20 dark:bg-indigo-500/10">
       <div className="flex items-center gap-2">
-        <span className="flex h-7 w-7 flex-none items-center justify-center rounded-lg bg-indigo-600 text-white shadow-sm shadow-indigo-600/30">
+        <span className="flex h-7 w-7 flex-none items-center justify-center rounded-lg bg-indigo-600 text-white">
           <NotebookPen className="h-3.5 w-3.5" aria-hidden="true" />
         </span>
-        <h4 className="text-sm font-bold tracking-tight text-slate-900 dark:text-white">
+        <h4 className="text-sm font-semibold text-slate-900 dark:text-white">
           {block.title}
         </h4>
       </div>
@@ -34,12 +33,12 @@ function ChartBlock({ block }) {
   const top = Math.max(...block.values)
 
   return (
-    <div className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white/70 p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900/60">
+    <div className="flex h-full flex-col rounded-xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
       <div className="flex items-center gap-2">
-        <span className="flex h-7 w-7 flex-none items-center justify-center rounded-lg bg-gradient-to-br from-indigo-600 to-violet-600 text-white shadow-sm shadow-indigo-600/30">
+        <span className="flex h-7 w-7 flex-none items-center justify-center rounded-lg bg-indigo-600 text-white">
           <PieChart className="h-3.5 w-3.5" aria-hidden="true" />
         </span>
-        <h4 className="text-sm font-bold tracking-tight text-slate-900 dark:text-white">
+        <h4 className="text-sm font-semibold text-slate-900 dark:text-white">
           {block.title}
         </h4>
       </div>
@@ -62,15 +61,12 @@ function ChartBlock({ block }) {
               key={`${block.labels[index]}-${index}`}
               className="flex w-full max-w-16 flex-col items-center gap-2"
             >
-              <span className="text-xs font-bold tabular-nums text-slate-700 dark:text-slate-200">
+              <span className="text-xs font-semibold tabular-nums text-slate-700 dark:text-slate-200">
                 {valueLabel(value, block.unit)}
               </span>
-              <div className="flex h-28 w-full items-end overflow-hidden rounded-t-lg bg-slate-100/70 dark:bg-slate-800">
-                <motion.div
-                  initial={false}
-                  animate={{ height: `${height}%` }}
-                  transition={{ duration: 0.6, delay: index * 0.08, ease: 'easeOut' }}
-                  className="w-full rounded-t-lg bg-gradient-to-t from-indigo-600 via-violet-500 to-violet-400"
+              <div className="flex h-28 w-full items-end overflow-hidden rounded-t-md bg-slate-100/70 dark:bg-slate-800">
+                <div
+                  className="w-full rounded-t-md bg-indigo-500"
                   style={{ height: `${height}%` }}
                 />
               </div>
@@ -82,23 +78,21 @@ function ChartBlock({ block }) {
         })}
       </div>
 
-      <div className="mt-3 flex items-center justify-between text-xs text-slate-400 dark:text-slate-500">
-        <span aria-hidden="true">
-          Highest value: {valueLabel(top, block.unit)}
-        </span>
-      </div>
+      <p className="mt-3 text-xs text-slate-400 dark:text-slate-500" aria-hidden="true">
+        Highest value: {valueLabel(top, block.unit)}
+      </p>
     </div>
   )
 }
 
 function ChecklistBlock({ block }) {
   return (
-    <div className="flex h-full flex-col rounded-2xl border border-emerald-200/70 bg-emerald-50/40 p-5 shadow-sm dark:border-emerald-500/20 dark:bg-emerald-500/10">
+    <div className="flex h-full flex-col rounded-xl border border-emerald-200/70 bg-emerald-50/40 p-5 dark:border-emerald-500/20 dark:bg-emerald-500/10">
       <div className="flex items-center gap-2">
-        <span className="flex h-7 w-7 flex-none items-center justify-center rounded-lg bg-emerald-600 text-white shadow-sm shadow-emerald-600/30">
+        <span className="flex h-7 w-7 flex-none items-center justify-center rounded-lg bg-emerald-600 text-white">
           <CheckCircle2 className="h-3.5 w-3.5" aria-hidden="true" />
         </span>
-        <h4 className="text-sm font-bold tracking-tight text-slate-900 dark:text-white">
+        <h4 className="text-sm font-semibold text-slate-900 dark:text-white">
           {block.title}
         </h4>
       </div>
@@ -126,7 +120,7 @@ function BlockRenderer({ blocks }) {
   }
 
   return (
-    <div className="grid gap-5 sm:grid-cols-2">
+    <div className="grid gap-4 sm:grid-cols-2">
       {blocks.map((block, index) => {
         const key = `${block.type}-${index}`
         let node = null
@@ -139,21 +133,7 @@ function BlockRenderer({ blocks }) {
           node = <ChecklistBlock block={block} />
         }
 
-        if (!node) {
-          return null
-        }
-
-        return (
-          <motion.div
-            key={key}
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: index * 0.1, ease: 'easeOut' }}
-            className="min-w-0"
-          >
-            {node}
-          </motion.div>
-        )
+        return node ? <div key={key} className="min-w-0">{node}</div> : null
       })}
     </div>
   )

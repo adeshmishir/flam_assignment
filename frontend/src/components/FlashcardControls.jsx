@@ -2,11 +2,10 @@ import { ChevronLeft, ChevronRight, RotateCcw } from 'lucide-react'
 
 function FlashcardControls({ onPrevious, onNext, onFlip, hasPrevious, hasNext }) {
   const base =
-    'inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:cursor-not-allowed disabled:opacity-40'
+    'inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:cursor-not-allowed disabled:opacity-40'
   const secondary =
-    'border border-slate-200 bg-white text-slate-700 shadow-sm hover:bg-slate-50 disabled:hover:bg-white dark:border-slate-700 dark:bg-slate-800/70 dark:text-slate-200 dark:hover:bg-slate-800 dark:disabled:hover:bg-slate-800/70'
-  const primary =
-    'bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md shadow-indigo-600/25 hover:from-indigo-500 hover:to-violet-500'
+    'border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 disabled:hover:bg-white dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:disabled:hover:bg-slate-900'
+  const primary = 'bg-indigo-600 text-white hover:bg-indigo-500'
 
   return (
     <div className="flex flex-wrap items-center justify-center gap-3">

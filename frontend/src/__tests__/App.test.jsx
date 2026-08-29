@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, afterEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import App from '../App.jsx'
@@ -23,6 +23,10 @@ const validData = {
 }
 
 describe('App generation flow', () => {
+  beforeEach(() => {
+    localStorage.clear()
+  })
+
   afterEach(() => {
     vi.unstubAllGlobals()
   })
@@ -47,7 +51,7 @@ describe('App generation flow', () => {
 
     await generateNotes(user, 'React')
 
-    expect(await screen.findByText('React Basics')).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: 'React Basics' })).toBeInTheDocument()
     expect(screen.getByText(validData.summary)).toBeInTheDocument()
     expect(screen.getByText('FC Q')).toBeInTheDocument()
     expect(screen.getByText('Quiz Q')).toBeInTheDocument()
@@ -79,7 +83,7 @@ describe('App generation flow', () => {
     expect(screen.getByText('The AI returned invalid data. Please try again.')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Try Again' })).toBeInTheDocument()
     // No study material rendered.
-    expect(screen.queryByText('React Basics')).not.toBeInTheDocument()
+    expect(screen.queryByRole('heading', { name: 'React Basics' })).not.toBeInTheDocument()
   })
 
   it('recovers from an error via Try Again to a successful result', async () => {
@@ -96,7 +100,7 @@ describe('App generation flow', () => {
 
     await user.click(screen.getByRole('button', { name: 'Try Again' }))
 
-    expect(await screen.findByText('React Basics')).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: 'React Basics' })).toBeInTheDocument()
     expect(screen.queryByText('Something went wrong')).not.toBeInTheDocument()
   })
 

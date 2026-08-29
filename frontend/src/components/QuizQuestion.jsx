@@ -10,8 +10,8 @@ function QuizQuestion({ question, selected, onSelect, isSubmitted, onNext, isLas
   const isCorrect = selected === question.answer
 
   return (
-    <div className="flex flex-col gap-6">
-      <p className="text-lg font-semibold leading-relaxed text-slate-800 dark:text-slate-100 sm:text-xl">
+    <div className="flex flex-col gap-5">
+      <p className="text-base leading-relaxed font-medium text-slate-900 dark:text-slate-100 sm:text-lg">
         {question.question}
       </p>
 
@@ -28,16 +28,16 @@ function QuizQuestion({ question, selected, onSelect, isSubmitted, onNext, isLas
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.35, ease: 'easeOut' }}
-          className={`rounded-2xl border p-4 ${
+          transition={{ duration: 0.28, ease: 'easeOut' }}
+          className={`rounded-xl border p-4 ${
             isCorrect
-              ? 'border-emerald-200 bg-emerald-50/80 dark:border-emerald-500/40 dark:bg-emerald-500/10'
-              : 'border-rose-200 bg-rose-50/80 dark:border-rose-500/40 dark:bg-rose-500/10'
+              ? 'border-emerald-200 bg-emerald-50/70 dark:border-emerald-500/30 dark:bg-emerald-500/10'
+              : 'border-rose-200 bg-rose-50/70 dark:border-rose-500/30 dark:bg-rose-500/10'
           }`}
           role="status"
         >
           <p
-            className={`flex items-center gap-2 font-bold ${
+            className={`flex items-center gap-2 font-semibold ${
               isCorrect ? 'text-emerald-700 dark:text-emerald-400' : 'text-rose-700 dark:text-rose-400'
             }`}
           >
@@ -64,7 +64,7 @@ function QuizQuestion({ question, selected, onSelect, isSubmitted, onNext, isLas
           <button
             type="button"
             onClick={onNext}
-            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-indigo-600/25 transition hover:from-indigo-500 hover:to-violet-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-slate-950"
+            className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-slate-950"
           >
             {isLast ? 'Finish Quiz' : 'Next Question'}
             <ChevronRight className="h-4 w-4" aria-hidden="true" />

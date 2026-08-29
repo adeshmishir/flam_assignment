@@ -22,11 +22,11 @@ function RefinePanel({ onRefine, isRefining, error }) {
   }
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white px-5 py-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:px-6 sm:py-6">
-      <h3 className="text-base font-semibold text-slate-900 dark:text-white">
+    <div className="rounded-2xl border border-stone-200/70 bg-paper/70 px-5 py-5 shadow-paper dark:border-stone-700/60 dark:bg-paper-dark/70 sm:px-6 sm:py-6">
+      <h3 className="text-base font-semibold text-stone-900 dark:text-white">
         Refine this material
       </h3>
-      <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+      <p className="mt-1 text-sm text-stone-500 dark:text-stone-400">
         Fine-tune what was generated.
       </p>
 
@@ -39,13 +39,13 @@ function RefinePanel({ onRefine, isRefining, error }) {
           rows={2}
           placeholder="e.g. Add a checklist for common mistakes and make the quiz harder"
           aria-label="Refinement instruction"
-          className="block w-full resize-y rounded-lg border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/25 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-400 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500 dark:focus:border-indigo-400 dark:disabled:bg-slate-800/60 dark:disabled:text-slate-600"
+          className="block w-full resize-y rounded-xl border border-stone-300/90 bg-white/80 px-3.5 py-2.5 text-sm text-stone-900 shadow-[inset_0_1px_2px_rgb(120_104_80/0.05)] transition placeholder:text-stone-400 focus:border-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-600/20 disabled:cursor-not-allowed disabled:bg-stone-100/60 disabled:text-stone-400 dark:border-stone-700 dark:bg-paper-dark/80 dark:text-white dark:placeholder:text-stone-500 dark:focus:border-amber-500 dark:focus:ring-amber-500/25 dark:disabled:bg-paper-dark/40 dark:disabled:text-stone-600"
         />
 
         {error && (
           <p
             role="alert"
-            className="flex items-center gap-2 text-sm font-medium text-rose-600 dark:text-rose-400"
+            className="flex items-center gap-2 text-sm font-medium text-rose-700 dark:text-rose-400"
           >
             {error}
           </p>
@@ -56,7 +56,7 @@ function RefinePanel({ onRefine, isRefining, error }) {
             type="button"
             onClick={handleSubmit}
             disabled={!canSubmit}
-            className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-indigo-600 to-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-indigo-600/25 transition hover:from-indigo-500 hover:to-blue-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:cursor-not-allowed disabled:from-slate-200 disabled:to-slate-200 disabled:text-slate-500 disabled:shadow-none disabled:hover:from-slate-200 disabled:hover:to-slate-200 dark:focus-visible:ring-offset-slate-950 dark:disabled:from-slate-800 dark:disabled:to-slate-800 dark:disabled:text-slate-600"
+            className="inline-flex items-center gap-2 rounded-lg bg-amber-600 px-4 py-2 text-sm font-semibold text-white shadow-paper transition hover:bg-amber-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 focus-visible:ring-offset-2 focus-visible:ring-offset-paper disabled:cursor-not-allowed disabled:bg-stone-200 disabled:text-stone-500 disabled:shadow-none disabled:hover:bg-stone-200 disabled:hover:text-stone-500 dark:focus-visible:ring-offset-paper-dark dark:disabled:bg-stone-800 dark:disabled:text-stone-600 dark:disabled:hover:bg-stone-800"
           >
             {isRefining ? (
               <>

@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { RotateCw } from 'lucide-react'
 
-function Flashcard({ card, isFlipped, onFlip }) {
+function Flashcard({ card, isFlipped, onFlip, buttonRef }) {
   if (!card) {
     return null
   }
@@ -9,14 +9,15 @@ function Flashcard({ card, isFlipped, onFlip }) {
   return (
     <button
       type="button"
+      ref={buttonRef}
       onClick={onFlip}
       aria-label="Flip card"
       aria-pressed={isFlipped}
-      className="group relative block w-full overflow-hidden rounded-2xl border border-slate-200 bg-white text-left shadow-sm transition hover:-translate-y-0.5 hover:border-indigo-300 hover:shadow-lg hover:shadow-indigo-500/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-indigo-500/40 dark:hover:shadow-black/40"
+      className="group relative block w-full overflow-hidden rounded-2xl border border-stone-200/70 bg-paper/70 text-left shadow-paper transition hover:-translate-y-0.5 hover:border-amber-500/50 hover:bg-white/80 hover:shadow-paper-focus focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-600/60 dark:border-stone-700/60 dark:bg-paper-dark/70 dark:hover:border-amber-500/40 dark:hover:bg-paper-dark"
     >
       <span
         aria-hidden="true"
-        className="absolute inset-x-0 top-0 z-10 h-1 bg-gradient-to-r from-indigo-500 via-blue-500 to-indigo-500 opacity-70"
+        className="absolute inset-x-0 top-0 z-10 h-[3px] bg-gradient-to-r from-amber-600/70 via-amber-500/60 to-amber-600/70 opacity-70"
       />
       <motion.div
         key={isFlipped ? 'back' : 'front'}
@@ -29,18 +30,18 @@ function Flashcard({ card, isFlipped, onFlip }) {
         <span
           className={`rounded-full px-3 py-1 text-xs font-semibold ${
             isFlipped
-              ? 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300'
-              : 'bg-indigo-50 text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-300'
+              ? 'bg-stone-100 text-stone-600 dark:bg-stone-800 dark:text-stone-300'
+              : 'bg-amber-50 text-amber-800 dark:bg-amber-500/10 dark:text-amber-400'
           }`}
         >
           {isFlipped ? 'Answer' : 'Question'}
         </span>
 
-        <p className="mt-5 max-w-lg text-base leading-relaxed text-slate-800 dark:text-slate-100 sm:text-lg">
+        <p className="mt-5 max-w-lg text-base leading-relaxed text-stone-800 dark:text-stone-100 sm:text-lg">
           {isFlipped ? card.answer : card.question}
         </p>
 
-        <span className="mt-6 inline-flex items-center gap-1.5 text-xs text-slate-400 transition group-hover:text-slate-500 dark:text-slate-500 dark:group-hover:text-slate-400">
+        <span className="mt-6 inline-flex items-center gap-1.5 text-xs text-stone-400 transition group-hover:text-stone-600 dark:text-stone-500 dark:group-hover:text-stone-400">
           <RotateCw
             className="h-3.5 w-3.5 transition-transform duration-300 group-hover:rotate-180"
             aria-hidden="true"

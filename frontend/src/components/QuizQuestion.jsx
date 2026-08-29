@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion'
-import { CircleCheck, CircleX, ChevronRight } from 'lucide-react'
+import { CircleCheck, CircleX, Send } from 'lucide-react'
 import QuizOptions from './QuizOptions.jsx'
 
-function QuizQuestion({ question, selected, onSelect, isSubmitted, onNext, isLast }) {
+function QuizQuestion({ question, selected, onSelect, isSubmitted, onSubmit }) {
   if (!question) {
     return null
   }
@@ -11,7 +11,7 @@ function QuizQuestion({ question, selected, onSelect, isSubmitted, onNext, isLas
 
   return (
     <div className="flex flex-col gap-5">
-      <p className="text-base leading-relaxed font-medium text-slate-900 dark:text-slate-100 sm:text-lg">
+      <p className="text-base leading-relaxed font-medium text-stone-900 dark:text-stone-100 sm:text-lg">
         {question.question}
       </p>
 
@@ -31,8 +31,8 @@ function QuizQuestion({ question, selected, onSelect, isSubmitted, onNext, isLas
           transition={{ duration: 0.28, ease: 'easeOut' }}
           className={`rounded-xl border p-4 ${
             isCorrect
-              ? 'border-emerald-200 bg-emerald-50/70 dark:border-emerald-500/30 dark:bg-emerald-500/10'
-              : 'border-rose-200 bg-rose-50/70 dark:border-rose-500/30 dark:bg-rose-500/10'
+              ? 'border-emerald-200/80 bg-emerald-50/60 dark:border-emerald-500/30 dark:bg-emerald-500/10'
+              : 'border-rose-200/80 bg-rose-50/60 dark:border-rose-500/30 dark:bg-rose-500/10'
           }`}
           role="status"
         >
@@ -49,25 +49,26 @@ function QuizQuestion({ question, selected, onSelect, isSubmitted, onNext, isLas
             <span>{isCorrect ? 'Correct!' : 'Incorrect.'}</span>
           </p>
           {!isCorrect && (
-            <p className="mt-2 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+            <p className="mt-2 text-sm leading-relaxed text-stone-700 dark:text-stone-300">
               Correct answer: {question.options[question.answer]}
             </p>
           )}
-          <p className="mt-1.5 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+          <p className="mt-1.5 text-sm leading-relaxed text-stone-600 dark:text-stone-400">
             Explanation: {question.explanation}
           </p>
         </motion.div>
       )}
 
-      {isSubmitted && (
-        <div className="flex justify-end">
+      {!isSubmitted && (
+        <div className="flex flex-wrap items-center gap-2">
           <button
             type="button"
-            onClick={onNext}
-            className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-indigo-600 to-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm shadow-indigo-600/25 transition hover:from-indigo-500 hover:to-blue-500 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-slate-950"
+            onClick={onSubmit}
+            disabled={selected === null}
+            className="inline-flex items-center gap-2 rounded-lg bg-amber-600 px-5 py-2.5 text-sm font-semibold text-white shadow-paper transition hover:bg-amber-500 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 focus-visible:ring-offset-2 focus-visible:ring-offset-paper disabled:cursor-not-allowed disabled:bg-stone-200 disabled:text-stone-500 disabled:shadow-none disabled:hover:bg-stone-200 disabled:hover:text-stone-500 dark:focus-visible:ring-offset-paper-dark dark:disabled:bg-stone-800 dark:disabled:text-stone-600 dark:disabled:hover:bg-stone-800"
           >
-            {isLast ? 'Finish Quiz' : 'Next Question'}
-            <ChevronRight className="h-4 w-4" aria-hidden="true" />
+            <Send className="h-4 w-4" aria-hidden="true" />
+            Submit Answer
           </button>
         </div>
       )}

@@ -50,29 +50,27 @@ function QuizOptions({ options, selected, onSelect, disabled, submitted, correct
 
         if (submitted) {
           if (isCorrect) {
-            ring =
-              'border-emerald-400 bg-emerald-50 shadow-[0_4px_20px_-8px_rgba(16,185,129,0.4)] dark:border-emerald-500/60 dark:bg-emerald-500/10'
-            badge = 'bg-emerald-500 text-white'
+            ring = 'border-emerald-500/60 bg-emerald-50/60 dark:border-emerald-500/60 dark:bg-emerald-500/10'
+            badge = 'bg-emerald-600 text-white'
             label = <CircleCheck className="h-4 w-4" aria-hidden="true" />
           } else if (isWrongSelection) {
-            ring =
-              'border-rose-400 bg-rose-50 shadow-[0_4px_20px_-8px_rgba(244,63,94,0.4)] dark:border-rose-500/60 dark:bg-rose-500/10'
-            badge = 'bg-rose-500 text-white'
+            ring = 'border-rose-400/70 bg-rose-50/60 dark:border-rose-500/60 dark:bg-rose-500/10'
+            badge = 'bg-rose-600 text-white'
             label = <CircleX className="h-4 w-4" aria-hidden="true" />
           } else {
-            ring = 'border-slate-200 bg-white text-slate-400 dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-500'
-            badge = 'border border-slate-300 bg-white text-slate-400 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-500'
+            ring = 'border-stone-200/80 bg-white/60 text-stone-400 dark:border-stone-700/70 dark:bg-paper-dark/50 dark:text-stone-500'
+            badge = 'border border-stone-300/80 bg-white/60 text-stone-400 dark:border-stone-600 dark:bg-paper-dark/60 dark:text-stone-500'
             dimmed = true
           }
         } else if (isSelected) {
           ring =
-            'border-indigo-500 bg-indigo-50 shadow-[0_4px_20px_-8px_rgba(99,102,241,0.45)] dark:border-indigo-400 dark:bg-indigo-500/10'
-          badge = 'bg-indigo-500 text-white'
-          glow = 'ring-2 ring-indigo-500/20'
+            'border-amber-600/80 bg-amber-50 shadow-paper dark:border-amber-500/70 dark:bg-amber-500/10'
+          badge = 'bg-amber-600 text-white'
+          glow = 'ring-2 ring-amber-600/20'
         } else {
           ring =
-            'border-slate-200 bg-white text-slate-800 hover:border-indigo-300 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-100 dark:hover:border-indigo-500/40 dark:hover:bg-slate-800'
-          badge = 'border border-slate-300 bg-slate-50 text-slate-500 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300'
+            'border-stone-200/90 bg-white/70 text-stone-800 hover:border-amber-500/60 hover:bg-white hover:shadow-paper dark:border-stone-700 dark:bg-paper-dark/60 dark:text-stone-100 dark:hover:border-amber-500/40 dark:hover:bg-paper-dark'
+          badge = 'border border-stone-300/80 bg-stone-100/70 text-stone-500 dark:border-stone-600 dark:bg-stone-800 dark:text-stone-300'
         }
 
         return (
@@ -85,7 +83,7 @@ function QuizOptions({ options, selected, onSelect, disabled, submitted, correct
             onClick={() => onSelect(index)}
             whileTap={disabled ? undefined : { scale: 0.98 }}
             transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-            className={`flex items-center gap-3 rounded-xl border px-4 py-3 text-left text-sm transition-shadow focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:cursor-not-allowed sm:text-[15px] ${ring} ${glow}`}
+            className={`flex items-center gap-3 rounded-xl border px-4 py-3 text-left text-sm transition-shadow focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-600/60 disabled:cursor-not-allowed sm:text-[15px] ${ring} ${glow}`}
           >
             <span
               className={`flex h-7 w-7 flex-none items-center justify-center rounded-full text-xs font-bold ${
@@ -95,7 +93,7 @@ function QuizOptions({ options, selected, onSelect, disabled, submitted, correct
             >
               {label}
             </span>
-            <span className={`flex-1 leading-snug ${dimmed ? 'text-slate-400' : ''}`}>
+            <span className={`flex-1 leading-snug ${dimmed ? 'text-stone-400 dark:text-stone-500' : ''}`}>
               {option}
             </span>
           </motion.button>

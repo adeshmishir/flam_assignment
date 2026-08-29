@@ -39,9 +39,9 @@ describe('App generation flow', () => {
     await user.click(button)
   }
 
-  it('shows an idle empty state before any generation', () => {
+  it('shows the app-name hero before any generation', () => {
     render(<App />)
-    expect(screen.getByText('Start Learning')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'StudyMate' })).toBeInTheDocument()
   })
 
   it('goes idle -> loading -> success and renders study material', async () => {
@@ -54,6 +54,7 @@ describe('App generation flow', () => {
     expect(await screen.findByRole('heading', { name: 'React Basics' })).toBeInTheDocument()
     expect(screen.getByText(validData.summary)).toBeInTheDocument()
     expect(screen.getByText('FC Q')).toBeInTheDocument()
+    await user.click(screen.getByRole('tab', { name: 'Quiz' }))
     expect(screen.getByText('Quiz Q')).toBeInTheDocument()
   })
 

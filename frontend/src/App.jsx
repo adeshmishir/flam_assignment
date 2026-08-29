@@ -6,7 +6,6 @@ import Sidebar from './components/Sidebar.jsx'
 import Header from './components/Header.jsx'
 import StudyInput from './components/StudyInput.jsx'
 import GenerateButton from './components/GenerateButton.jsx'
-import EmptyState from './components/EmptyState.jsx'
 import LoadingState from './components/LoadingState.jsx'
 import ErrorState from './components/ErrorState.jsx'
 import StudyMaterial from './components/StudyMaterial.jsx'
@@ -226,9 +225,16 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+    <div className="min-h-screen bg-transparent text-stone-900 dark:text-stone-100">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-amber-600 focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white focus:shadow-paper"
+      >
+        Skip to content
+      </a>
+
       <aside
-        className={`fixed inset-y-0 left-0 z-30 hidden overflow-hidden border-slate-200 bg-white transition-[width] duration-300 ease-in-out dark:border-slate-800 dark:bg-slate-900 lg:block ${
+        className={`fixed inset-y-0 left-0 z-30 hidden overflow-hidden border-stone-200/70 bg-paper-soft transition-[width] duration-300 ease-in-out dark:border-stone-800/70 dark:bg-paper-soft-dark lg:block ${
           sidebarOpen ? 'w-64 border-r' : 'w-0 border-transparent'
         }`}
       >
@@ -250,7 +256,7 @@ function App() {
           type="button"
           onClick={() => setSidebarOpen(true)}
           aria-label="Show session sidebar"
-          className="fixed left-0 top-1/2 z-30 hidden h-10 w-9 -translate-y-1/2 items-center justify-center rounded-r-xl border border-l-0 border-slate-200 bg-white text-slate-500 shadow-sm transition hover:text-indigo-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400 dark:hover:text-indigo-400 lg:inline-flex"
+          className="fixed left-0 top-1/2 z-30 hidden h-10 w-9 -translate-y-1/2 items-center justify-center rounded-r-xl border border-l-0 border-stone-200/80 bg-paper/80 text-stone-500 shadow-paper transition hover:text-amber-700 hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 dark:border-stone-700 dark:bg-paper-dark dark:text-stone-400 dark:hover:text-amber-500 lg:inline-flex"
         >
           <PanelLeftOpen className="h-4 w-4" aria-hidden="true" />
         </button>
@@ -261,10 +267,6 @@ function App() {
           sidebarOpen ? 'lg:pl-64' : 'lg:pl-0'
         }`}
       >
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-80 bg-[radial-gradient(60%_100%_at_50%_0%,rgba(99,102,241,0.09),transparent)] dark:bg-[radial-gradient(60%_100%_at_50%_0%,rgba(129,140,248,0.14),transparent)]"
-        />
         <NavBar
           drawerOpen={drawerOpen}
           onToggleDrawer={() => setDrawerOpen((prev) => !prev)}
@@ -272,7 +274,11 @@ function App() {
           onToggleTheme={toggleTheme}
         />
 
-        <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-8 px-4 pt-8 pb-16 sm:px-6 sm:pt-10 lg:px-8">
+        <main
+          id="main-content"
+          tabIndex={-1}
+          className="mx-auto flex w-full max-w-6xl flex-1 scroll-mt-24 flex-col gap-8 px-4 pt-8 pb-16 outline-none sm:px-6 sm:pt-10 lg:px-8"
+        >
         <Header />
 
         <motion.section
@@ -280,11 +286,11 @@ function App() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35, ease: 'easeOut' }}
-          className="relative mx-auto w-full max-w-4xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition focus-within:border-indigo-300 focus-within:shadow-[0_0_0_1px_rgba(99,102,241,0.25),0_8px_30px_-12px_rgba(99,102,241,0.35)] dark:border-slate-800 dark:bg-slate-900 dark:focus-within:border-indigo-500/50 dark:focus-within:shadow-[0_0_0_1px_rgba(99,102,241,0.25),0_8px_30px_-12px_rgba(99,102,241,0.18)]"
+          className="relative mx-auto w-full max-w-4xl overflow-hidden rounded-2xl border border-stone-200/70 bg-paper/70 shadow-paper transition focus-within:border-amber-600/60 focus-within:shadow-paper-focus dark:border-stone-700/60 dark:bg-paper-dark/70 dark:focus-within:border-amber-500/50"
         >
           <span
             aria-hidden="true"
-            className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-indigo-500/70 to-transparent"
+            className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-600/50 to-transparent"
           />
           <div className="flex flex-col gap-5 px-5 py-5 sm:px-6 sm:py-6">
             <StudyInput
@@ -293,7 +299,7 @@ function App() {
               onFillSuggestion={fillSuggestion}
             />
 
-            <div className="flex justify-end border-t border-slate-100 pt-4 dark:border-slate-800">
+            <div className="flex justify-end border-t border-stone-200/70 pt-4 dark:border-stone-800/70">
               <GenerateButton
                 onClick={handleGenerate}
                 disabled={!hasValidInput}
@@ -304,12 +310,6 @@ function App() {
         </motion.section>
 
         <div ref={resultsRef} className="flex scroll-mt-24 flex-col gap-8">
-          {status === 'idle' && (
-            <motion.div key="idle" className="mx-auto w-full max-w-4xl" {...stateMotion}>
-              <EmptyState />
-            </motion.div>
-          )}
-
           {status === 'loading' && (
             <motion.div key="loading" className="mx-auto w-full max-w-4xl" {...stateMotion}>
               <LoadingState streamText={streamText} />
@@ -349,14 +349,14 @@ function App() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.18, ease: 'easeOut' }}
-              className="absolute inset-0 h-full w-full cursor-default bg-slate-950/40"
+              className="absolute inset-0 h-full w-full cursor-default bg-stone-900/40"
             />
             <motion.aside
               initial={{ x: '-100%' }}
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
               transition={{ type: 'tween', duration: 0.22, ease: 'easeOut' }}
-              className="absolute inset-y-0 left-0 w-72 max-w-[85vw] overflow-y-auto [scrollbar-width:none] border-r border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 [&::-webkit-scrollbar]:hidden"
+              className="absolute inset-y-0 left-0 w-72 max-w-[85vw] overflow-y-auto [scrollbar-width:none] border-r border-stone-200/70 bg-paper-soft dark:border-stone-800/70 dark:bg-paper-soft-dark [&::-webkit-scrollbar]:hidden"
             >
               <Sidebar
                 sessions={sessions}

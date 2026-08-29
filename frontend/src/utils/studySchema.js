@@ -21,6 +21,6 @@ const quizQuestionSchema = z.object({
 export const studyResponseSchema = z.object({
   title: z.string().min(1, 'Title must be non-empty'),
   summary: z.string().min(1, 'Summary must be non-empty'),
-  flashcards: z.array(flashcardSchema).min(1, 'At least one flashcard required'),
-  quiz: z.array(quizQuestionSchema).min(1, 'At least one quiz question required'),
+  flashcards: z.array(flashcardSchema).min(4, 'At least 4 flashcards required'),
+  quiz: z.array(quizQuestionSchema).min(4, 'At least 4 quiz questions required'),
 })

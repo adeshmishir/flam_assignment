@@ -15,17 +15,37 @@ const STUDY_RESPONSE_SHAPE = `{
   "summary": "A concise explanation of the topic.",
   "blocks": [
     { "type": "card", "title": "Key idea", "body": "A paragraph explaining the key idea." },
-    { "type": "chart", "title": "Growth over time", "labels": ["2020", "2021", "2022"], "values": [10, 25, 40], "unit": "MB" },
     { "type": "checklist", "title": "Checklist", "items": ["Item one", "Item two", "Item three"] }
   ],
   "flashcards": [
-    { "question": "A question about the topic", "answer": "A clear, correct answer" }
+    { "question": "A question about the topic", "answer": "A clear, correct answer" },
+    { "question": "Another flashcard question", "answer": "Its correct answer" },
+    { "question": "A third flashcard question", "answer": "Its correct answer" },
+    { "question": "A fourth flashcard question", "answer": "Its correct answer" }
   ],
   "quiz": [
     {
       "question": "A multiple-choice question",
       "options": ["option a", "option b", "option c", "option d"],
       "answer": 0,
+      "explanation": "Why this option is correct"
+    },
+    {
+      "question": "Another multiple-choice question",
+      "options": ["option a", "option b", "option c", "option d"],
+      "answer": 1,
+      "explanation": "Why this option is correct"
+    },
+    {
+      "question": "A third multiple-choice question",
+      "options": ["option a", "option b", "option c", "option d"],
+      "answer": 2,
+      "explanation": "Why this option is correct"
+    },
+    {
+      "question": "A fourth multiple-choice question",
+      "options": ["option a", "option b", "option c", "option d"],
+      "answer": 3,
       "explanation": "Why this option is correct"
     }
   ]
@@ -37,13 +57,13 @@ Rules:
 - Respond with JSON ONLY. No Markdown, no code fences, no commentary outside the JSON.
 - The response MUST match this exact structure:
 ${STUDY_RESPONSE_SHAPE}
-- "blocks" is an optional array of rich study content. Use only these block types:
+- "blocks" holds the key insights and MUST contain EXACTLY TWO (2) blocks. Use only these block types:
   * card — { "type": "card", "title": "...", "body": "..." } for key ideas, mnemonics, or short explainers.
-  * chart — { "type": "chart", "title": "...", "labels": [...], "values": [...], "unit": "..." } for comparisons or progress. "labels" and "values" MUST have the same length and at least 2 entries each; use plain numbers.
   * checklist — { "type": "checklist", "title": "...", "items": ["..."] } for steps, do's and don'ts, or review points.
-- Include blocks only when they genuinely help the topic. When unsure, omit "blocks" entirely.
-- Generate useful, accurate flashcards that help test memory.
-- Generate useful multiple-choice quiz questions that test understanding.
+- Do NOT include chart or comparison blocks. No "chart" type, no "labels"/"values" comparisons, no graphs.
+- Generate between 4 and 6 flashcards. Flashcards must be useful, accurate, and help test memory.
+- Generate between 4 and 6 multiple-choice quiz questions that test understanding.
+- NEVER return fewer than 4 flashcards or fewer than 4 quiz questions.
 - Every quiz question MUST have exactly 4 options.
 - "answer" MUST be a zero-based index (0, 1, 2, or 3) pointing to the correct option.
 - Use only valid JSON. Do not add trailing commas or comments.`
@@ -55,8 +75,9 @@ Rules:
 - Return the FULL updated study material as JSON, preserving the same structure:
 ${STUDY_RESPONSE_SHAPE}
 - Apply the user's follow-up instruction to the existing material (add, remove, reword, restructure, or fix content as requested).
+- Keep between 4 and 6 flashcards and between 4 and 6 quiz questions.
 - Keep every flashcard question/answer non-empty, keep exactly 4 options per quiz question, and keep "answer" as a zero-based index pointing at the correct option.
-- Keep "blocks" only if it still makes sense after the edit; you may add, change, or remove blocks.
+- Keep "blocks" to EXACTLY TWO (2) insight blocks. You may add, change, or remove blocks, but there must always be two. Never use chart or comparison blocks.
 - Do not invent facts that are not supported. Do not change the meaning of correct content.`
 
 const groq = apiKey ? new Groq({ apiKey }) : null

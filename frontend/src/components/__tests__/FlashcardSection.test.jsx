@@ -10,69 +10,63 @@ const flashcards = [
 ]
 
 describe('FlashcardSection', () => {
-  it('shows the first card question and counter', () => {
+  it('renders all flashcards at once', () => {
     render(<FlashcardSection flashcards={flashcards} />)
     expect(screen.getByText('Question 1')).toBeInTheDocument()
-    expect(screen.getByText('Card 1 of 3')).toBeInTheDocument()
-  })
-
-  it('flips between question and answer when the card is clicked', async () => {
-    const user = userEvent.setup()
-    render(<FlashcardSection flashcards={flashcards} />)
-
-    expect(screen.getByText('Question 1')).toBeInTheDocument()
-    await user.click(screen.getByRole('button', { name: 'Flip card' }))
-    expect(screen.getByText('Answer 1')).toBeInTheDocument()
-
-    await user.click(screen.getByRole('button', { name: 'Flip card' }))
-    expect(screen.getByText('Question 1')).toBeInTheDocument()
-  })
-
-  it('shows the Answer label after flipping', async () => {
-    const user = userEvent.setup()
-    render(<FlashcardSection flashcards={flashcards} />)
-    await user.click(screen.getByRole('button', { name: 'Flip card' }))
-    expect(screen.getByText('Answer')).toBeInTheDocument()
-  })
-
-  it('navigates forward and backward', async () => {
-    const user = userEvent.setup()
-    render(<FlashcardSection flashcards={flashcards} />)
-
-    await user.click(screen.getByRole('button', { name: 'Next' }))
     expect(screen.getByText('Question 2')).toBeInTheDocument()
-    expect(screen.getByText('Card 2 of 3')).toBeInTheDocument()
-
-    await user.click(screen.getByRole('button', { name: 'Previous' }))
-    expect(screen.getByText('Question 1')).toBeInTheDocument()
-    expect(screen.getByText('Card 1 of 3')).toBeInTheDocument()
+    expect(screen.getByText('Question 3')).toBeInTheDocument()
+    expect(screen.getByText('3 cards')).toBeInTheDocument()
+    // Answers stay hidden until a card is flipped.
+    expect(screen.queryByText('Answer 1')).not.toBeInTheDocument()
+    expect(screen.getAllByRole('button', { name: 'Flip card' })).toHaveLength(3)
   })
 
-  it('disables Previous on the first card and Next on the last card', async () => {
+  it('flips a single card to reveal its answer independently', async () => {
     const user = userEvent.setup()
     render(<FlashcardSection flashcards={flashcards} />)
 
-    expect(screen.getByRole('button', { name: 'Previous' })).toBeDisabled()
+    await user.click(screen.getAllByRole('button', { name: 'Flip card' })[0])
 
-    await user.click(screen.getByRole('button', { name: 'Next' }))
-    await user.click(screen.getByRole('button', { name: 'Next' }))
-    expect(screen.getByText('Card 3 of 3')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Next' })).toBeDisabled()
-  })
-
-  it('resets the flip state when moving to the next card', async () => {
-    const user = userEvent.setup()
-    render(<FlashcardSection flashcards={flashcards} />)
-
-    await user.click(screen.getByRole('button', { name: 'Flip card' }))
+    const flipped = screen.getAllByRole('button', { name: 'Flip card' })
+    expect(flipped[0]).toHaveAttribute('aria-pressed', 'true')
+    expect(flipped[1]).toHaveAttribute('aria-pressed', 'false')
     expect(screen.getByText('Answer 1')).toBeInTheDocument()
-
-    await user.click(screen.getByRole('button', { name: 'Next' }))
-    expect(screen.getByText('Question 2')).toBeInTheDocument()
     expect(screen.queryByText('Answer 2')).not.toBeInTheDocument()
   })
 
-  it('renders a friendly empty state for an empty flashcards array', () => {
+  it('flips the card back to the question on a second click', async () => {
+    const user = userEvent.setup()
+    render(<FlashcardSection flashcards={[flashcards[0]]} />)
+
+    await user.click(screen.getByRole('button', { name: 'Flip card' }))
+    expect(screen.getByText('Answer 1')).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Flip card' }))
+    expect(screen.queryByText('Answer 1')).not.toBeInTheDocument()
+    expect(screen.getByText('Question 1')).toBeInTheDocument()
+  })
+
+  it('moves focus between cards with arrow keys', async () => {
+    const user = userEvent.setup()
+    render(<FlashcardSection flashcards={flashcards} />)
+
+    const cards = screen.getAllByRole('button', { name: 'Flip card' })
+    cards[0].focus()
+
+    await user.keyboard('{ArrowRight}')
+    expect(cards[1]).toHaveFocus()
+
+    await user.keyboard('{ArrowLeft}')
+    expect(cards[0]).toHaveFocus()
+
+    await user.keyboard('{End}')
+    expect(cards[2]).toHaveFocus()
+
+    await user.keyboard('{Home}')
+    expect(cards[0]).toHaveFocus()
+  })
+
+  it('handles an empty flashcards list', () => {
     render(<FlashcardSection flashcards={[]} />)
     expect(screen.getByText('No flashcards to show.')).toBeInTheDocument()
   })

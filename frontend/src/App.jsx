@@ -56,6 +56,7 @@ function App() {
   const abortControllerRef = useRef(null)
   const requestIdRef = useRef(0)
   const resultsRef = useRef(null)
+  const lastPromptRef = useRef('')
 
   useEffect(() => {
     return () => {
@@ -154,6 +155,8 @@ function App() {
       setGenerationKey(requestId)
       setStudyData(data)
       setStatus('success')
+      setNotes('')
+      lastPromptRef.current = trimmed
       saveSession(data, trimmed)
     } catch (err) {
       if (err.name === 'AbortError') {
@@ -199,7 +202,7 @@ function App() {
       setGenerationKey((prev) => prev + 1)
       setStudyData(data)
       setIsRefining(false)
-      saveSession(data, notes)
+      saveSession(data, lastPromptRef.current || notes)
     } catch (err) {
       if (err.name === 'AbortError') {
         return

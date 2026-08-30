@@ -23,7 +23,7 @@ function questionCard(questionText) {
 
 async function answerIn(user, card, optionText) {
   await user.click(within(card).getByRole('radio', { name: optionText }))
-  await user.click(within(card).getByRole('button', { name: 'Submit Answer' }))
+  await user.click(within(card).getByRole('button', { name: 'Submit' }))
 }
 
 // Matches text that is broken up by child elements (e.g. <p>Correct: <span>2</span></p>).
@@ -44,35 +44,48 @@ describe('QuizSection', () => {
 
   it('starts with Submit disabled on every question until an option is selected', () => {
     render(<QuizSection quiz={[quiz[0], quiz[1]]} />)
-    const buttons = screen.getAllByRole('button', { name: 'Submit Answer' })
+    const buttons = screen.getAllByRole('button', { name: 'Submit' })
     expect(buttons).toHaveLength(2)
     buttons.forEach((button) => expect(button).toBeDisabled())
   })
 
-  it('shows correct feedback and updates the score for a correct answer', async () => {
+  it('highlights the correct option and updates the score on a correct answer', async () => {
     const user = userEvent.setup()
     render(<QuizSection quiz={[quiz[0], quiz[1]]} />)
 
     await answerIn(user, questionCard('Q1'), 'Q1A')
 
-    expect(screen.getByText('Correct!')).toBeInTheDocument()
-    expect(screen.getByText(/Explanation: E1/)).toBeInTheDocument()
     expect(screen.getByText('Score: 1 / 2')).toBeInTheDocument()
+    // No textual right/wrong verdict anymore — a Retry button appears instead.
+    expect(screen.queryByText('Correct!')).not.toBeInTheDocument()
+    expect(within(questionCard('Q1')).getByRole('button', { name: 'Retry' })).toBeInTheDocument()
     // Only the answered question is locked.
     expect(within(questionCard('Q1')).getByRole('radio', { name: 'Q1A' })).toBeDisabled()
     expect(within(questionCard('Q2')).getByRole('radio', { name: 'Q2A' })).toBeEnabled()
   })
 
-  it('shows incorrect feedback and the correct answer on a wrong submission', async () => {
+  it('offers a Retry on a wrong submission without revealing the verdict as text', async () => {
     const user = userEvent.setup()
     render(<QuizSection quiz={single} />)
 
     await answerIn(user, questionCard('Q1'), 'Q1B') // correct is Q1A
 
-    expect(screen.getByText('Incorrect.')).toBeInTheDocument()
-    expect(screen.getByText('Correct answer: Q1A')).toBeInTheDocument()
-    expect(screen.getByText(/Explanation: E1/)).toBeInTheDocument()
+    expect(screen.queryByText('Incorrect.')).not.toBeInTheDocument()
+    expect(screen.queryByText('Correct answer: Q1A')).not.toBeInTheDocument()
     expect(screen.getByText('Score: 0 / 1')).toBeInTheDocument()
+    expect(within(questionCard('Q1')).getByRole('button', { name: 'Retry' })).toBeInTheDocument()
+  })
+
+  it('resets a single question when its Retry button is used', async () => {
+    const user = userEvent.setup()
+    render(<QuizSection quiz={[quiz[0], quiz[1]]} />)
+
+    await answerIn(user, questionCard('Q1'), 'Q1A') // correct
+    await user.click(within(questionCard('Q1')).getByRole('button', { name: 'Retry' }))
+
+    expect(within(questionCard('Q1')).getByRole('button', { name: 'Submit' })).toBeInTheDocument()
+    expect(within(questionCard('Q1')).getByRole('radio', { name: 'Q1A' })).toBeEnabled()
+    expect(screen.getByText('Score: 0 / 2')).toBeInTheDocument()
   })
 
   it('shows a perfect-score summary when every question is answered correctly', async () => {
@@ -99,7 +112,7 @@ describe('QuizSection', () => {
     expect(screen.getByRole('button', { name: 'Retry Wrong Answers' })).toBeInTheDocument()
   })
 
-  it('retries only the wrong questions and keeps the correct ones locked', async () => {
+  it('shows only the wrong questions, unmarked, after Retry Wrong Answers', async () => {
     const user = userEvent.setup()
     render(<QuizSection quiz={[quiz[0], quiz[1], quiz[2]]} />)
 
@@ -109,11 +122,38 @@ describe('QuizSection', () => {
 
     await user.click(screen.getByRole('button', { name: 'Retry Wrong Answers' }))
 
-    // The wrong question resets, the correct ones stay answered.
-    expect(within(questionCard('Q2')).queryByText('Incorrect.')).not.toBeInTheDocument()
-    expect(within(questionCard('Q1')).getByText('Correct!')).toBeInTheDocument()
-    expect(within(questionCard('Q3')).getByText('Correct!')).toBeInTheDocument()
+    // Only the wrong question stays, with its options unmarked and ready to answer.
+    expect(screen.getByText('Retry wrong answers')).toBeInTheDocument()
+    expect(screen.queryByText('Q1')).not.toBeInTheDocument()
+    expect(screen.queryByText('Q3')).not.toBeInTheDocument()
+    expect(screen.getByText('Q2')).toBeInTheDocument()
+    expect(within(questionCard('Q2')).getByRole('button', { name: 'Submit' })).toBeInTheDocument()
+    expect(within(questionCard('Q2')).queryByRole('button', { name: 'Retry' })).not.toBeInTheDocument()
     expect(within(questionCard('Q2')).getByRole('radio', { name: 'Q2A' })).toBeEnabled()
+    expect(within(questionCard('Q2')).getByRole('radio', { name: 'Q2A' })).not.toBeChecked()
+    expect(within(questionCard('Q2')).getByRole('radio', { name: 'Q2B' })).not.toBeChecked()
+  })
+
+  it('shows a retry-complete summary and a way back to all questions', async () => {
+    const user = userEvent.setup()
+    render(<QuizSection quiz={[quiz[0], quiz[1]]} />)
+
+    await answerIn(user, questionCard('Q1'), 'Q1B') // wrong (correct Q1A)
+    await answerIn(user, questionCard('Q2'), 'Q2B') // correct
+
+    await user.click(screen.getByRole('button', { name: 'Retry Wrong Answers' }))
+
+    // Only Q1 is retried; answer it correctly.
+    expect(screen.getByText('Q1')).toBeInTheDocument()
+    expect(screen.queryByText('Q2')).not.toBeInTheDocument()
+    await answerIn(user, questionCard('Q1'), 'Q1A')
+
+    expect(screen.getByText('Retry Complete!')).toBeInTheDocument()
+    expect(screen.getByText(/Original Score: 1 \/ 2/)).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Back to all questions' }))
+    expect(screen.getByText('Q1')).toBeInTheDocument()
+    expect(screen.getByText('Q2')).toBeInTheDocument()
   })
 
   it('handles an empty quiz gracefully', () => {

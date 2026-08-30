@@ -31,7 +31,7 @@ function QuizOptions({ options, selected, onSelect, disabled, submitted, correct
 
   return (
     <div
-      className="flex flex-col gap-2.5"
+      className="flex flex-col gap-2"
       role="radiogroup"
       aria-label="Options"
       aria-orientation="vertical"
@@ -83,10 +83,10 @@ function QuizOptions({ options, selected, onSelect, disabled, submitted, correct
             onClick={() => onSelect(index)}
             whileTap={disabled ? undefined : { scale: 0.98 }}
             transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-            className={`flex items-center gap-3 rounded-xl border px-4 py-3 text-left text-sm transition-shadow focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-600/60 disabled:cursor-not-allowed sm:text-[15px] ${ring} ${glow}`}
+            className={`flex items-center gap-2.5 rounded-xl border px-3 py-2 text-left text-sm transition-shadow focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-600/60 disabled:cursor-not-allowed ${ring} ${glow}`}
           >
             <span
-              className={`flex h-7 w-7 flex-none items-center justify-center rounded-full text-xs font-bold ${
+              className={`flex h-6 w-6 flex-none items-center justify-center rounded-full text-xs font-bold ${
                 submitted && (isCorrect || isWrongSelection) ? '' : 'border'
               } ${badge}`}
               aria-hidden="true"

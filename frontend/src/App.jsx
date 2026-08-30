@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { PanelLeftOpen } from 'lucide-react'
+import { PanelLeftClose, PanelLeftOpen } from 'lucide-react'
 import NavBar from './components/NavBar.jsx'
 import Sidebar from './components/Sidebar.jsx'
 import Header from './components/Header.jsx'
@@ -13,6 +13,18 @@ import Footer from './components/Footer.jsx'
 import { streamStudyMaterial, refineStudyMaterial } from './services/studyApi.js'
 import { useTheme } from './hooks/useTheme.js'
 import { useSessions } from './hooks/useSessions.js'
+
+const MIN_OUTPUT_MS = 2000
+
+async function ensureMinDuration(startedAt) {
+  if (import.meta.env.MODE === 'test') {
+    return
+  }
+  const remaining = MIN_OUTPUT_MS - (Date.now() - startedAt)
+  if (remaining > 0) {
+    await new Promise((resolve) => setTimeout(resolve, remaining))
+  }
+}
 
 const stateMotion = {
   initial: { opacity: 0, y: 12 },
@@ -110,6 +122,7 @@ function App() {
       return
     }
 
+    const startedAt = Date.now()
     const requestId = ++requestIdRef.current
 
     abortControllerRef.current?.abort()
@@ -131,7 +144,9 @@ function App() {
         },
       })
 
-      if (requestId !== requestIdRef.current) {
+      await ensureMinDuration(startedAt)
+
+      if (requestId !== requestIdRef.current || controller.signal.aborted) {
         return
       }
 
@@ -160,6 +175,7 @@ function App() {
       return
     }
 
+    const startedAt = Date.now()
     const requestId = ++requestIdRef.current
 
     abortControllerRef.current?.abort()
@@ -174,7 +190,9 @@ function App() {
         signal: controller.signal,
       })
 
-      if (requestId !== requestIdRef.current) {
+      await ensureMinDuration(startedAt)
+
+      if (requestId !== requestIdRef.current || controller.signal.aborted) {
         return
       }
 
@@ -245,22 +263,25 @@ function App() {
             onDeleteSession={deleteSession}
             hasMaterial={Boolean(studyData)}
             onStartOver={handleStartOver}
-            sidebarOpen={sidebarOpen}
-            onToggleSidebar={() => setSidebarOpen((prev) => !prev)}
           />
         </div>
       </aside>
 
-      {!sidebarOpen && (
-        <button
-          type="button"
-          onClick={() => setSidebarOpen(true)}
-          aria-label="Show session sidebar"
-          className="fixed left-0 top-1/2 z-30 hidden h-10 w-9 -translate-y-1/2 items-center justify-center rounded-r-xl border border-l-0 border-stone-200/80 bg-paper/80 text-stone-500 shadow-paper transition hover:text-amber-700 hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 dark:border-stone-700 dark:bg-paper-dark dark:text-stone-400 dark:hover:text-amber-500 lg:inline-flex"
-        >
+      <button
+        type="button"
+        onClick={() => setSidebarOpen((prev) => !prev)}
+        aria-expanded={sidebarOpen}
+        aria-label={sidebarOpen ? 'Hide session sidebar' : 'Show session sidebar'}
+        className={`fixed top-1/2 z-30 hidden h-10 w-9 -translate-y-1/2 items-center justify-center rounded-r-xl border border-l-0 border-stone-200/80 bg-paper/80 text-stone-500 shadow-paper transition-[left] hover:text-amber-700 hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 dark:border-stone-700 dark:bg-paper-dark dark:text-stone-400 dark:hover:text-amber-500 lg:inline-flex ${
+          sidebarOpen ? 'left-64' : 'left-0'
+        }`}
+      >
+        {sidebarOpen ? (
+          <PanelLeftClose className="h-4 w-4" aria-hidden="true" />
+        ) : (
           <PanelLeftOpen className="h-4 w-4" aria-hidden="true" />
-        </button>
-      )}
+        )}
+      </button>
 
       <div
         className={`relative flex min-h-screen min-w-0 flex-col transition-[padding] duration-300 ease-in-out ${
@@ -277,7 +298,7 @@ function App() {
         <main
           id="main-content"
           tabIndex={-1}
-          className="mx-auto flex w-full max-w-6xl flex-1 scroll-mt-24 flex-col gap-8 px-4 pt-8 pb-16 outline-none sm:px-6 sm:pt-10 lg:px-8"
+          className="mx-auto flex w-full max-w-6xl flex-1 scroll-mt-24 flex-col gap-6 px-4 pt-8 pb-20 outline-none sm:px-6 sm:pt-10 lg:px-8"
         >
         <Header />
 
@@ -286,28 +307,28 @@ function App() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35, ease: 'easeOut' }}
-          className="relative mx-auto w-full max-w-4xl overflow-hidden rounded-2xl border border-stone-200/70 bg-paper/70 shadow-paper transition focus-within:border-amber-600/60 focus-within:shadow-paper-focus dark:border-stone-700/60 dark:bg-paper-dark/70 dark:focus-within:border-amber-500/50"
+          className="relative mx-auto w-full max-w-3xl overflow-hidden rounded-2xl border border-stone-200/70 bg-paper/70 shadow-paper transition focus-within:border-amber-600/60 focus-within:shadow-paper-focus dark:border-stone-700/60 dark:bg-paper-dark/70 dark:focus-within:border-amber-500/50"
         >
           <span
             aria-hidden="true"
             className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-600/50 to-transparent"
           />
-          <div className="flex flex-col gap-5 px-5 py-5 sm:px-6 sm:py-6">
+          <div className="px-4 py-4 sm:px-5 sm:py-5">
             <StudyInput
               value={notes}
               onChange={handleChange}
               onFillSuggestion={fillSuggestion}
             />
-
-            <div className="flex justify-end border-t border-stone-200/70 pt-4 dark:border-stone-800/70">
-              <GenerateButton
-                onClick={handleGenerate}
-                disabled={!hasValidInput}
-                isLoading={isLoading}
-              />
-            </div>
           </div>
         </motion.section>
+
+        <div className="mx-auto flex w-full max-w-3xl justify-end">
+          <GenerateButton
+            onClick={handleGenerate}
+            disabled={!hasValidInput}
+            isLoading={isLoading}
+          />
+        </div>
 
         <div ref={resultsRef} className="flex scroll-mt-24 flex-col gap-8">
           {status === 'loading' && (

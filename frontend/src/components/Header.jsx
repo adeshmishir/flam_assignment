@@ -6,12 +6,12 @@ function Header() {
       <div className="flex justify-center">
         <LogoMark />
       </div>
-      <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-stone-900 dark:text-white sm:text-5xl">
+      <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-stone-900 dark:text-white sm:text-4xl">
         Study<span className="text-amber-600 dark:text-amber-400">Mate</span>
       </h1>
       <span
         aria-hidden="true"
-        className="mx-auto mt-5 block h-[3px] w-16 rounded-full bg-gradient-to-r from-transparent via-amber-600/70 to-transparent"
+        className="mx-auto mt-4 block h-[3px] w-14 rounded-full bg-gradient-to-r from-transparent via-amber-600/70 to-transparent"
       />
     </header>
   )

@@ -10,7 +10,7 @@ function StudyInput({ value, onChange, onFillSuggestion }) {
   const charCount = value.length
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-3">
       <div>
         <label
           htmlFor="study-material"
@@ -23,10 +23,10 @@ function StudyInput({ value, onChange, onFillSuggestion }) {
           name="study-material"
           value={value}
           onChange={onChange}
-          rows={8}
+          rows={4}
           wrap="soft"
           placeholder="Paste your notes here, or describe a topic — e.g. 'binary search algorithm'"
-          className="mt-2 block w-full resize-y rounded-xl border border-stone-300/90 bg-white/80 px-3.5 py-3 text-sm text-stone-900 shadow-[inset_0_1px_2px_rgb(120_104_80/0.05)] transition placeholder:text-stone-400 focus:border-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-600/20 dark:border-stone-700 dark:bg-paper-dark/80 dark:text-white dark:placeholder:text-stone-500 dark:focus:border-amber-500 dark:focus:ring-amber-500/25"
+          className="mt-1.5 block w-full resize-y rounded-xl border border-stone-300/90 bg-white/80 px-3.5 py-2.5 text-sm text-stone-900 shadow-[inset_0_1px_2px_rgb(120_104_80/0.05)] transition placeholder:text-stone-400 focus:border-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-600/20 dark:border-stone-700 dark:bg-paper-dark/80 dark:text-white dark:placeholder:text-stone-500 dark:focus:border-amber-500 dark:focus:ring-amber-500/25"
           aria-describedby="study-material-hint"
         />
         <div className="mt-1.5 flex items-center justify-between gap-3">
@@ -53,7 +53,7 @@ function StudyInput({ value, onChange, onFillSuggestion }) {
                 key={topic}
                 type="button"
                 onClick={() => onFillSuggestion(topic)}
-                className={`rounded-full border px-3 py-1.5 text-sm font-medium transition-all hover:-translate-y-0.5 active:translate-y-0 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-600/60 ${
+                className={`rounded-full border px-2.5 py-1 text-xs font-medium transition-all lg:hover:-translate-y-0.5 active:translate-y-0 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-600/60 ${
                   isActive
                     ? 'border-amber-600/70 bg-amber-50 text-amber-800 dark:border-amber-500/60 dark:bg-amber-500/10 dark:text-amber-400'
                     : 'border-stone-200/90 bg-white/70 text-stone-600 hover:border-amber-500/60 hover:bg-white hover:text-amber-800 dark:border-stone-700 dark:bg-paper-dark/60 dark:text-stone-300 dark:hover:border-amber-500/40 dark:hover:text-amber-500'

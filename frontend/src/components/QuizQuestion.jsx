@@ -10,8 +10,8 @@ function QuizQuestion({ question, selected, onSelect, isSubmitted, onSubmit }) {
   const isCorrect = selected === question.answer
 
   return (
-    <div className="flex flex-col gap-5">
-      <p className="text-base leading-relaxed font-medium text-stone-900 dark:text-stone-100 sm:text-lg">
+    <div className="flex flex-col gap-3.5">
+      <p className="text-sm leading-relaxed font-medium text-stone-900 dark:text-stone-100 sm:text-base">
         {question.question}
       </p>
 
@@ -29,7 +29,7 @@ function QuizQuestion({ question, selected, onSelect, isSubmitted, onSubmit }) {
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.28, ease: 'easeOut' }}
-          className={`rounded-xl border p-4 ${
+          className={`rounded-xl border p-3 ${
             isCorrect
               ? 'border-emerald-200/80 bg-emerald-50/60 dark:border-emerald-500/30 dark:bg-emerald-500/10'
               : 'border-rose-200/80 bg-rose-50/60 dark:border-rose-500/30 dark:bg-rose-500/10'
@@ -65,7 +65,7 @@ function QuizQuestion({ question, selected, onSelect, isSubmitted, onSubmit }) {
             type="button"
             onClick={onSubmit}
             disabled={selected === null}
-            className="inline-flex items-center gap-2 rounded-lg bg-amber-600 px-5 py-2.5 text-sm font-semibold text-white shadow-paper transition hover:bg-amber-500 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 focus-visible:ring-offset-2 focus-visible:ring-offset-paper disabled:cursor-not-allowed disabled:bg-stone-200 disabled:text-stone-500 disabled:shadow-none disabled:hover:bg-stone-200 disabled:hover:text-stone-500 dark:focus-visible:ring-offset-paper-dark dark:disabled:bg-stone-800 dark:disabled:text-stone-600 dark:disabled:hover:bg-stone-800"
+            className="inline-flex items-center gap-2 rounded-lg bg-amber-600 px-4 py-2 text-sm font-semibold text-white shadow-paper transition hover:bg-amber-500 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 focus-visible:ring-offset-2 focus-visible:ring-offset-paper disabled:cursor-not-allowed disabled:bg-stone-200 disabled:text-stone-500 disabled:shadow-none disabled:hover:bg-stone-200 disabled:hover:text-stone-500 dark:focus-visible:ring-offset-paper-dark dark:disabled:bg-stone-800 dark:disabled:text-stone-600 dark:disabled:hover:bg-stone-800"
           >
             <Send className="h-4 w-4" aria-hidden="true" />
             Submit Answer

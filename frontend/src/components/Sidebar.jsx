@@ -1,5 +1,14 @@
 import { useRef, useState } from 'react'
-import { BookOpen, BrainCircuit, Clock, PanelLeftClose, RotateCcw, Trash2 } from 'lucide-react'
+import {
+  BookOpen,
+  BrainCircuit,
+  ChevronDown,
+  ChevronUp,
+  Clock,
+  Repeat,
+  RotateCcw,
+  Trash2,
+} from 'lucide-react'
 
 const PROFILE_NAMES = ['Aarav', 'Maya', 'Leo', 'Sam', 'Priya', 'Iris']
 
@@ -29,10 +38,8 @@ function Sidebar({
   onDeleteSession,
   hasMaterial,
   onStartOver,
-  sidebarOpen,
-  onToggleSidebar,
 }) {
-  const [profileIndex] = useState(() => {
+  const [profileIndex, setProfileIndex] = useState(() => {
     const saved = window.localStorage.getItem('studymate:profile')
     if (saved !== null) {
       const index = Number(saved)
@@ -44,8 +51,29 @@ function Sidebar({
     window.localStorage.setItem('studymate:profile', String(index))
     return index
   })
+  const [profileOpen, setProfileOpen] = useState(false)
   const profileName = PROFILE_NAMES[profileIndex]
   const sessionButtonRefs = useRef([])
+
+  const cycleProfile = () => {
+    setProfileIndex((prev) => {
+      const next = (prev + 1) % PROFILE_NAMES.length
+      window.localStorage.setItem('studymate:profile', String(next))
+      return next
+    })
+  }
+
+  const stats = {
+    sessions: sessions.length,
+    flashcards: sessions.reduce(
+      (sum, session) => sum + (Array.isArray(session.data?.flashcards) ? session.data.flashcards.length : 0),
+      0
+    ),
+    quiz: sessions.reduce(
+      (sum, session) => sum + (Array.isArray(session.data?.quiz) ? session.data.quiz.length : 0),
+      0
+    ),
+  }
 
   const handleSessionsKeyDown = (event) => {
     if (sessions.length === 0) {
@@ -79,17 +107,6 @@ function Sidebar({
             </span>
           )}
         </div>
-        {onToggleSidebar && (
-          <button
-            type="button"
-            onClick={onToggleSidebar}
-            aria-expanded={sidebarOpen}
-            aria-label="Hide session sidebar"
-            className="ml-1 inline-flex flex-none items-center justify-center rounded-lg p-1.5 text-stone-400 transition hover:bg-stone-200/50 hover:text-stone-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-600/60 dark:text-stone-500 dark:hover:bg-stone-800 dark:hover:text-stone-200"
-          >
-            <PanelLeftClose className="h-4 w-4" aria-hidden="true" />
-          </button>
-        )}
       </div>
 
       {sessions.length === 0 ? (
@@ -158,16 +175,63 @@ function Sidebar({
         </div>
       )}
 
-      <div className="flex items-center gap-2.5 border-t border-stone-200/70 px-4 py-3 dark:border-stone-800/70">
-        <span className="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-amber-600 text-white shadow-paper">
-          <BrainCircuit className="h-4 w-4" aria-hidden="true" />
-        </span>
-        <div className="min-w-0">
-          <p className="truncate text-sm font-semibold text-stone-800 dark:text-stone-100">
-            {profileName}
-          </p>
-          <p className="truncate text-xs text-stone-400 dark:text-stone-500">Study locally</p>
+      <div className="border-t border-stone-200/70 dark:border-stone-800/70">
+        <div className="flex items-center gap-2 px-4 py-3">
+          <button
+            type="button"
+            onClick={cycleProfile}
+            aria-label="Switch learner profile"
+            title="Click to switch learner"
+            className="flex min-w-0 flex-1 items-center gap-2.5 rounded-lg p-0 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-600/60"
+          >
+            <span className="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-amber-600 text-white shadow-paper">
+              <BrainCircuit className="h-4 w-4" aria-hidden="true" />
+            </span>
+            <span className="min-w-0">
+              <span className="flex items-center gap-1.5">
+                <span className="truncate text-sm font-semibold text-stone-800 dark:text-stone-100">
+                  {profileName}
+                </span>
+                <Repeat className="h-3 w-3 flex-none text-amber-600 dark:text-amber-500" aria-hidden="true" />
+              </span>
+              <span className="block truncate text-xs text-stone-400 dark:text-stone-500">
+                Click to switch learner
+              </span>
+            </span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setProfileOpen((prev) => !prev)}
+            aria-expanded={profileOpen}
+            aria-label={profileOpen ? 'Hide profile stats' : 'Show profile stats'}
+            className="flex-none rounded-lg p-1.5 text-stone-400 transition hover:bg-stone-200/50 hover:text-stone-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-600/60 dark:text-stone-500 dark:hover:bg-stone-800 dark:hover:text-stone-200"
+          >
+            {profileOpen ? (
+              <ChevronUp className="h-4 w-4" aria-hidden="true" />
+            ) : (
+              <ChevronDown className="h-4 w-4" aria-hidden="true" />
+            )}
+          </button>
         </div>
+        {profileOpen && (
+          <div className="grid grid-cols-3 gap-2 border-t border-stone-200/70 px-4 py-3 dark:border-stone-800/70">
+            {[
+              { label: 'Sessions', value: stats.sessions },
+              { label: 'Flashcards', value: stats.flashcards },
+              { label: 'Quiz', value: stats.quiz },
+            ].map((stat) => (
+              <div
+                key={stat.label}
+                className="rounded-lg border border-stone-200/70 bg-white/60 px-2 py-2 text-center dark:border-stone-800/70 dark:bg-paper-dark/60"
+              >
+                <p className="text-base font-bold text-stone-800 dark:text-white">{stat.value}</p>
+                <p className="text-[10px] font-medium uppercase tracking-wide text-stone-400 dark:text-stone-500">
+                  {stat.label}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )

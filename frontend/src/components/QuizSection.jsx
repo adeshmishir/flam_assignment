@@ -58,7 +58,7 @@ function QuizSection({ quiz }) {
   }
 
   return (
-    <section aria-label="Quiz" className="flex flex-col gap-4">
+    <section aria-label="Quiz" className="flex flex-col gap-3">
       <div className="flex items-center justify-between gap-4">
         <h3 className="text-base font-semibold text-stone-900 dark:text-white">Quiz</h3>
         <span
@@ -72,7 +72,7 @@ function QuizSection({ quiz }) {
         </span>
       </div>
 
-      <ol className="flex flex-col gap-4">
+      <ol className="flex flex-col gap-3">
         {questions.map((question, index) => {
           const state = questionStates[index]
           return (
@@ -81,7 +81,7 @@ function QuizSection({ quiz }) {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.28, ease: 'easeOut', delay: index * 0.03 }}
-              className="rounded-2xl border border-stone-200/70 bg-paper/70 px-5 py-6 shadow-paper dark:border-stone-700/60 dark:bg-paper-dark/70 sm:px-7 sm:py-7"
+              className="rounded-2xl border border-stone-200/70 bg-paper/70 px-4 py-4 shadow-paper dark:border-stone-700/60 dark:bg-paper-dark/70 sm:px-5 sm:py-5"
             >
               <QuizQuestion
                 question={question}

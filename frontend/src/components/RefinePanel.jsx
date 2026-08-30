@@ -22,15 +22,15 @@ function RefinePanel({ onRefine, isRefining, error }) {
   }
 
   return (
-    <div className="rounded-2xl border border-stone-200/70 bg-paper/70 px-5 py-5 shadow-paper dark:border-stone-700/60 dark:bg-paper-dark/70 sm:px-6 sm:py-6">
-      <h3 className="text-base font-semibold text-stone-900 dark:text-white">
+    <div className="rounded-2xl border border-stone-200/70 bg-paper/70 px-4 py-4 shadow-paper dark:border-stone-700/60 dark:bg-paper-dark/70 sm:px-5 sm:py-5">
+      <h3 className="text-sm font-semibold text-stone-900 dark:text-white">
         Refine this material
       </h3>
-      <p className="mt-1 text-sm text-stone-500 dark:text-stone-400">
+      <p className="mt-0.5 text-xs text-stone-500 dark:text-stone-400">
         Fine-tune what was generated.
       </p>
 
-      <div className="mt-4 flex flex-col gap-3">
+      <div className="mt-3 flex flex-col gap-2.5">
         <textarea
           value={instruction}
           onChange={(event) => setInstruction(event.target.value)}
@@ -39,7 +39,7 @@ function RefinePanel({ onRefine, isRefining, error }) {
           rows={2}
           placeholder="e.g. Add a checklist for common mistakes and make the quiz harder"
           aria-label="Refinement instruction"
-          className="block w-full resize-y rounded-xl border border-stone-300/90 bg-white/80 px-3.5 py-2.5 text-sm text-stone-900 shadow-[inset_0_1px_2px_rgb(120_104_80/0.05)] transition placeholder:text-stone-400 focus:border-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-600/20 disabled:cursor-not-allowed disabled:bg-stone-100/60 disabled:text-stone-400 dark:border-stone-700 dark:bg-paper-dark/80 dark:text-white dark:placeholder:text-stone-500 dark:focus:border-amber-500 dark:focus:ring-amber-500/25 dark:disabled:bg-paper-dark/40 dark:disabled:text-stone-600"
+          className="block w-full resize-y rounded-lg border border-stone-300/90 bg-white/80 px-3 py-1.5 text-sm text-stone-900 shadow-[inset_0_1px_2px_rgb(120_104_80/0.05)] transition placeholder:text-stone-400 focus:border-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-600/20 disabled:cursor-not-allowed disabled:bg-stone-100/60 disabled:text-stone-400 dark:border-stone-700 dark:bg-paper-dark/80 dark:text-white dark:placeholder:text-stone-500 dark:focus:border-amber-500 dark:focus:ring-amber-500/25 dark:disabled:bg-paper-dark/40 dark:disabled:text-stone-600"
         />
 
         {error && (

@@ -38,11 +38,10 @@ describe('StudyMaterial', () => {
     expect(screen.getByText('Hooks power state and effects.')).toBeInTheDocument()
   })
 
-  it('shows all flashcards by default and hides the quiz', () => {
+  it('shows all quiz questions by default and hides the flashcards', () => {
     renderMaterial()
-    expect(screen.getByText('FC Q')).toBeInTheDocument()
-    expect(screen.getByText('FC Q2')).toBeInTheDocument()
-    expect(screen.getByText('Quiz Q1')).not.toBeVisible()
+    expect(screen.getByText('Quiz Q1')).toBeInTheDocument()
+    expect(screen.getByText('FC Q')).not.toBeVisible()
   })
 
   it('switches to show every quiz question at once', async () => {
@@ -60,18 +59,18 @@ describe('StudyMaterial', () => {
     const user = userEvent.setup()
     renderMaterial()
 
-    const flashcardsTab = screen.getByRole('tab', { name: 'Flashcards' })
-    flashcardsTab.focus()
+    const quizTab = screen.getByRole('tab', { name: 'Quiz' })
+    quizTab.focus()
     await user.keyboard('{ArrowRight}')
 
-    const quizTab = screen.getByRole('tab', { name: 'Quiz' })
-    expect(quizTab).toHaveAttribute('aria-selected', 'true')
-    expect(quizTab).toHaveFocus()
-    expect(screen.getByText('Quiz Q1')).toBeInTheDocument()
-
-    await user.keyboard('{Home}')
+    const flashcardsTab = screen.getByRole('tab', { name: 'Flashcards' })
     expect(flashcardsTab).toHaveAttribute('aria-selected', 'true')
     expect(flashcardsTab).toHaveFocus()
+    expect(screen.getByText('FC Q')).toBeInTheDocument()
+
+    await user.keyboard('{End}')
+    expect(quizTab).toHaveAttribute('aria-selected', 'true')
+    expect(quizTab).toHaveFocus()
   })
 
   it('keeps quiz progress when switching tabs', async () => {

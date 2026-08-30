@@ -48,6 +48,36 @@ describe('Sidebar', () => {
     expect(props.onLoadSession).toHaveBeenCalledWith(sessions[1])
   })
 
+  it('cycles the learner profile on click', async () => {
+    const user = userEvent.setup()
+    renderSidebar()
+
+    const switchBtn = screen.getByRole('button', { name: 'Switch learner profile' })
+    const initialName = switchBtn.textContent
+    await user.click(switchBtn)
+    expect(switchBtn.textContent).not.toBe(initialName)
+  })
+
+  it('reveals saved-session stats from the profile panel', async () => {
+    const user = userEvent.setup()
+    renderSidebar({
+      sessions: sessions.map((session) => ({
+        ...session,
+        data: {
+          flashcards: [{ question: 'a', answer: 'b' }, { question: 'c', answer: 'd' }],
+          quiz: [{ question: 'q', options: ['a', 'b', 'c', 'd'], answer: 0 }],
+        },
+      })),
+    })
+
+    await user.click(screen.getByRole('button', { name: 'Show profile stats' }))
+
+    expect(screen.getAllByText('Sessions')).toHaveLength(2)
+    // Sessions badge + Sessions stat + Quiz stat all show "2"; Flashcards stat shows "4".
+    expect(screen.getAllByText('2')).toHaveLength(3)
+    expect(screen.getByText('4')).toBeInTheDocument()
+  })
+
   it('handles arrow keys when no sessions exist', async () => {
     const user = userEvent.setup()
     renderSidebar({ sessions: [] })

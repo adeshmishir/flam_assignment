@@ -12,7 +12,7 @@ const TABS = [
 ]
 
 function StudyMaterial({ data, onRefine, isRefining, refineError }) {
-  const [activeTab, setActiveTab] = useState('flashcards')
+  const [activeTab, setActiveTab] = useState('quiz')
   const tabRefs = useRef([])
 
   const handleTablistKeyDown = (event) => {
